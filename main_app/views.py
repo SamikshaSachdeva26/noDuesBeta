@@ -58,40 +58,123 @@ def studentIndex(request):
 
     if request.POST:
         print(request.POST)
+        student = StudentUserInfo.objects.get(user=request.user)
+        
+
+
+
+
+
+
         varlib = request.POST.get('Library/CCC',None)
         if varlib:
-            lib = OtherRequest.objects.create(  other=OtherUserInfo.objects.get(user__username="LibraryCCC"),
+            # print("Print-----varlib")
+            try:
+                print("try....")
+                vlib = OtherRequest.objects.get(student=student, other=OtherUserInfo.objects.get(user__username="LibraryCCC"))
+                print("Print-----varlib",vlib)
+            except:
+                print("vlib none")
+                vlib = None
+
+            if vlib:
+                vlib.delete()
+                print("vlib deleted")
+                lib = OtherRequest.objects.create(  other=OtherUserInfo.objects.get(user__username="LibraryCCC"),
                                                 student=StudentUserInfo.objects.get(user=request.user),
                                                 remark="",
                                                 date_sent=datetime.date.today(),
                                                 approval_status=0
                                                 )
+                print("vlib created")
+            else:
+                print("else bahar wala")
+                lib = OtherRequest.objects.create(  other=OtherUserInfo.objects.get(user__username="LibraryCCC"),
+                                                student=StudentUserInfo.objects.get(user=request.user),
+                                                remark="",
+                                                date_sent=datetime.date.today(),
+                                                approval_status=0
+                                                )
+
+
+            
            # lib.save()
+        varlib = request.POST.get('HOSTEL',None)
+        if varlib:
+            # print("Print-----varlib")
+            try:
+                print("try....")
+                vlib = OtherRequest.objects.get(student=student, other=OtherUserInfo.objects.get(user__username=varlib))
+                print("Print-----varlib",vlib)
+            except:
+                print("vlib none")
+                vlib = None
 
-
-        varhostel = request.POST.get('HOSTEL',None)
-        if varhostel:
-            hos = OtherRequest.objects.create(  other=OtherUserInfo.objects.get(user__username=varhostel),
+            if vlib:
+                vlib.delete()
+                print("vlib deleted")
+                lib = OtherRequest.objects.create(  other=OtherUserInfo.objects.get(user__username=varlib),
                                                 student=StudentUserInfo.objects.get(user=request.user),
                                                 remark="",
                                                 date_sent=datetime.date.today(),
                                                 approval_status=0
                                                 )
+                print("vlib created")
+            else:
+                print("else bahar wala")
+                lib = OtherRequest.objects.create(  other=OtherUserInfo.objects.get(user__username=varlib),
+                                                student=StudentUserInfo.objects.get(user=request.user),
+                                                remark="",
+                                                date_sent=datetime.date.today(),
+                                                approval_status=0
+                                                )
+
+
+
+
+
+
+
+        # varhostel = request.POST.get('HOSTEL',None)
+        # if varhostel:
+        #     hos = OtherRequest.objects.create(  other=OtherUserInfo.objects.get(user__username=varhostel),
+        #                                         student=StudentUserInfo.objects.get(user=request.user),
+        #                                         remark="",
+        #                                         date_sent=datetime.date.today(),
+        #                                         approval_status=0
+        #                                         )
           #  hos.save()
 
 
         varbtp = request.POST.get('BTP',None)
         if varbtp:
-            btp = BTPRequest.objects.create(  btp=BTPUserInfo.objects.get(user__username=varbtp),
+            try:
+                btpt = BTPRequest.objects.get(student=student)
+            except:
+                btpt = None
+
+            if btpt:
+                btpt.delete()
+                btp = BTPRequest.objects.create(  btp=BTPUserInfo.objects.get(user__username=varbtp),
                                                 student=StudentUserInfo.objects.get(user=request.user),
                                                 remark="",
                                                 date_sent=datetime.date.today(),
                                                 approval_status=0
                                                 )
+           
+            else:
+                 btp = BTPRequest.objects.create(  btp=BTPUserInfo.objects.get(user__username=varbtp),
+                                                student=StudentUserInfo.objects.get(user=request.user),
+                                                remark="",
+                                                date_sent=datetime.date.today(),
+                                                approval_status=0
+                                                )
+           
+
           #  btp.save()
 
 
-        student = StudentUserInfo.objects.get(user=request.user)
+        
         labs = LabUserInfo.objects.filter(department_id=student.department_id)
         #print(labs)
         for lab in labs :
@@ -100,13 +183,27 @@ def studentIndex(request):
             varlab = request.POST.get(lab.user.username, None)
             # print(varlab)
             if varlab:
-                labx = LabRequests.objects.create(  lab=LabUserInfo.objects.get(id=lab.id),
+                try:
+                    ll = LabRequests.objects.get(student=student, lab=LabUserInfo.objects.get(user__username=varlab))
+                except:
+                    ll = None
+                if ll:
+                    ll.delete()
+                    labx = LabRequests.objects.create(  lab=LabUserInfo.objects.get(id=lab.id),
+                                                student=StudentUserInfo.objects.get(user=request.user),
+                                                remark="",
+                                                date_sent=datetime.date.today(),
+                                                approval_status=0
+                                                )
+                else:
+                    labx = LabRequests.objects.create(  lab=LabUserInfo.objects.get(id=lab.id),
                                                 student=StudentUserInfo.objects.get(user=request.user),
                                                 remark="",
                                                 date_sent=datetime.date.today(),
                                                 approval_status=0
                                                 )
               #  labx.save()
+
 
         return HttpResponseRedirect(reverse('mainPage'))
 
@@ -131,11 +228,32 @@ def labIndex(request):
     if request.POST:
         print(request.POST);
         if 'Accept' in request.POST:
-            pass
+            for req in LabRequests.objects.filter(lab__user=request.user, approval_status=0):
+                # try:
+                stud = str(req.student.rollnumber)
+                print(stud)
+                print(request.POST.getlist(stud)[0])
+                if request.POST.getlist(stud)[0] == 'YES':
+                    # req.update(approval_status=1, remark=request.POST.getlist(stud))
+                    req.approval_status = 1
+                    req.remark = request.POST.getlist(stud)[1]
+                    req.save()
+                # except:
+                # print("Nahi hua")
+
         elif 'Reject' in request.POST:
-            pass
-
-
+            for req in LabRequests.objects.filter(lab__user=request.user, approval_status=0):
+                # try:
+                stud = str(req.student.rollnumber)
+                print(stud)
+                print(request.POST.getlist(stud)[0])
+                if request.POST.getlist(stud)[0] == 'YES':
+                    # req.update(approval_status=1, remark=request.POST.getlist(stud))
+                    req.approval_status = 3
+                    req.remark = request.POST.getlist(stud)[1]
+                    req.save()
+                # except:
+                # print("Nahi hua")
 
 
     if request.user.is_authenticated:
@@ -148,6 +266,38 @@ def labIndex(request):
     return HttpResponseRedirect(reverse('mainPage'))
 
 def btpIndex(request):
+    if request.POST:
+        print(request.POST);
+        if 'Accept' in request.POST:
+            for req in BTPRequest.objects.filter(btp__user=request.user, approval_status=0):
+                # try:
+                stud = str(req.student.rollnumber)
+                print(stud)
+                print(request.POST.getlist(stud)[0])
+                if request.POST.getlist(stud)[0] == 'YES':
+                    # req.update(approval_status=1, remark=request.POST.getlist(stud))
+                    req.approval_status = 1
+                    req.remark = request.POST.getlist(stud)[1]
+                    req.save()
+                # except:
+                # print("Nahi hua")
+
+        elif 'Reject' in request.POST:
+            for req in BTPRequest.objects.filter(btp__user=request.user, approval_status=0):
+                # try:
+                stud = str(req.student.rollnumber)
+                print(stud)
+                print(request.POST.getlist(stud)[0])
+                if request.POST.getlist(stud)[0] == 'YES':
+                    # req.update(approval_status=1, remark=request.POST.getlist(stud))
+                    req.approval_status = 3
+                    req.remark = request.POST.getlist(stud)[1]
+                    req.save()
+                # except:
+                # print("Nahi hua")
+
+
+
 
     if request.user.is_authenticated:
 
@@ -159,6 +309,34 @@ def btpIndex(request):
     return HttpResponseRedirect(reverse('mainPage'))
 
 def otherIndex(request):
+
+    if request.POST:
+        print(request.POST);
+        if 'Accept' in request.POST:
+            for req in OtherRequest.objects.filter(other__user=request.user, approval_status=0):
+                # try:
+                stud = str(req.student.rollnumber)
+                print(stud)
+                print(request.POST.getlist(stud)[0])
+                if request.POST.getlist(stud)[0] == 'YES':
+                    # req.update(approval_status=1, remark=request.POST.getlist(stud))
+                    req.approval_status = 1
+                    req.remark = request.POST.getlist(stud)[1]
+                    req.save()
+                # except:
+                # print("Nahi hua")
+
+        elif 'Reject' in request.POST:
+            for req in OtherRequest.objects.filter(other__user=request.user, approval_status=0):
+                # try:
+                stud = str(req.student.rollnumber)
+                print(stud)
+                print(request.POST.getlist(stud)[0])
+                if request.POST.getlist(stud)[0] == 'YES':
+                    # req.update(approval_status=1, remark=request.POST.getlist(stud))
+                    req.approval_status = 3
+                    req.remark = request.POST.getlist(stud)[1]
+                    req.save()
 
     if request.user.is_authenticated:
 
@@ -645,6 +823,6 @@ def apply_page(request):
 
 
 
-    # print(l,h,b,op,k)
+    print(l,h,b,op,k)
     return render(request, 'main_app/apply.html', {'student' : student, 'btps' : btps, 'labs' : labs, 'labreqs': labreqs, 'othreqs': othreqs, 'btpreq' : btpreq,
                                                      'l' : l, 'h' : h, 'b' : b ,'op' : op , 'k' : k , 'arr' : arr })
