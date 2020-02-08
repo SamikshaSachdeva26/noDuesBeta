@@ -66,13 +66,16 @@
 
       </table>
 
+      <button type="submit" name="Accept" class="btn btn-primary">Accept</button>
+      <button type="submit" name="Reject" class="btn btn-danger">Reject</button>
+
     </form>
 
       </div>
     </div>
-    
+
     <script>
-  function myFunction() 
+  function myFunction()
   {
     var input, filter, table, tr, td, i, txtValue;
     input = document.getElementById("myInput");
@@ -81,7 +84,7 @@
     tr = table.getElementsByTagName("tr");
     for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[1];
-    if (td) 
+    if (td)
     {
       txtValue = td.textContent || td.innerText;
       if (txtValue.indexOf(filter) > -1) {
@@ -89,7 +92,7 @@
       } else {
         tr[i].style.display = "none";
       }
-    }       
+    }
   }
 }
 </script>
