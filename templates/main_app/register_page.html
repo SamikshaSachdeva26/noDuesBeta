@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+  </head>
+  <body>
+
+    <div class="container">
+      <div class="jumbotron">
+
+        {% if registered %}
+
+          <h1>Thank You For Registering</h1>
+        {% else  %}
+          <h1>Register Here</h1>
+          <h3>Fill out the form</h3>
+          {% if registerFlag == 0 %}
+          <form action="{% url 'main_app:registerStudent' %}" method="post">
+          {% elif registerFlag == 1 %}
+          <form action="{% url 'main_app:registerLab' %}" method="post">
+          {% elif registerFlag == 2 %}
+          <form action="{% url 'main_app:registerOther' %}" method="post">
+          {% elif registerFlag == 3 %}
+          <form action="{% url 'main_app:registerBTP' %}" method="post">
+          {% endif %}
+            {% csrf_token %}
+            {{ user_form.as_p }}
+            {{ info_form.as_p }}
+            <input type="submit" name="" value="Register">
+
+          </form>
+        {% endif %}
+
+      </div>
+
+    </div>
+
+  </body>
+</html>

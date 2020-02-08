@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    {% block js %}
+    {% endblock %}
+  </head>
+  <body>
+    {% if user.is_authenticated %}
+
+    <nav class="navbar navbar-default navbar-static-top">
+
+      <div class="container">
+        <ul class="nav navbar-nav">
+          <li><a class="navbar-brand" href="{% url 'studentIndex' %}">All Requests</a></li>
+          <li><a class="navbar-link" href="{% url 'main_app:studentLab' %}">Lab Requests</a></li>
+          <li><a class="navbar-link" href="{% url 'main_app:studentBTP' %}">BTP Requests</a></li>
+          <li><a class="navbar-link" href="{% url 'main_app:studentOther' %}">Other Requests</a></li>
+          <li><a class="navbar-link" href="{% url 'logout' %}">Log Out</a></li>
+          <li><a class="navbar-link" href="{% url 'main_app:change_password' %}">Change Password</a></li>
+
+        </ul>
+      </div>
+
+    </nav>
+
+    <div class="container">
+     
+      {% block body_block %}
+
+
+
+      {% endblock %}
+
+    </div>
+
+
+    {% else %}
+
+      <div class="container">
+        <div class="jumbotron">
+
+          <h1>Please Log In</h1>
+
+          <form action={% url 'main_app:user_login' %} method="post">
+            {% csrf_token %}
+            <label for="username">Username</label>
+            <input type="text" name="username" placeholder="Username">
+            <label for="password">Password</label>
+            <input type="password" name="password" placeholder="Password">
+
+            <input type="submit" name="" value="Login">
+          </form>
+
+          <a href="{% url 'main_app:registerStudent' %}">Don't have an account? Register as Student!</a>
+          <br>
+          <a href="{% url 'main_app:registerLab' %}">Don't have an account? Register as Lab!</a>
+          <br>
+          <a href="{% url 'main_app:registerBTP' %}">Don't have an account? Register as BTP!</a>
+          <br>
+          <a href="{% url 'main_app:registerOther' %}">Don't have an account? Register as Other!</a>
+          <br>
+
+        </div>
+
+      </div>
+
+    {% endif %}
+
+
+  </body>
+</html>

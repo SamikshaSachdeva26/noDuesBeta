@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% extends 'main_app/base.html' %}
+
+{% block body_block %}
+
+<div class="jumbotron">
+
+  <h3>BTP Requests</h3>
+
+  <table style="width:100%">
+  <tr>
+    <th>Student</th>
+    <th>BTP Professor</th>
+    <th>Approval Status</th>
+  </tr>
+
+  {% for req in btpRequests %}
+
+  <tr>
+    <td>{{ req.student.user.username }}</td>
+    <td>{{ req.btp.user.username }}</td>
+    {% if req.approval_status == 0 %}
+    <td>WAITING</td>
+    {% endif %}
+  </tr>
+
+  {% endfor %}
+
+</table>
+
+</div>
+
+{% endblock %}

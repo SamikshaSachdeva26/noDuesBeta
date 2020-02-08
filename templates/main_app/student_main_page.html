@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+{% extends 'main_app/base.html' %}
+
+{% block body_block %}
+<div class="container text-center">
+  <h3>Hello {{request.user.username}}</h3>
+</div>
+ <button type="button" class="btn btn-dark text-center"><a href="{% url 'main_app:StudentApply' %}">APPLY</a></button><br><br>
+<div class="jumbotron">
+
+  <h3>Lab Requests</h3>
+
+  <table style="width:100%">
+  <tr>
+    <th>Lab</th>
+    <th>Approval Status</th>
+    <th>Remark</th>
+
+  </tr>
+
+  {% for req in labRequests %}
+
+  <tr>
+    <td>{{ req.lab.user.username }}</td>
+
+    {% if req.approval_status == 0 %}
+    <td>WAITING</td>
+    {% elif req.approval_status == 1 %}
+    <td>Waiting for HOD approval</td>
+    {% elif req.approval_status == 2 %}
+    <td>Approved</td>
+    {% else %}
+    <td>Rejected</td>
+    {% endif %}
+
+    <td>{{ req.remark }}</td>
+  </tr>
+
+  {% endfor %}
+
+  </table>
+
+</div>
+
+
+<div class="jumbotron">
+
+  <h3>BTP Requests</h3>
+
+  <table style="width:100%">
+  <tr>
+    <th>BTP Professor</th>
+    <th>Approval Status</th>
+    <th>Remark</th>
+  </tr>
+
+  {% for req in btpRequests %}
+
+  <tr>
+
+    <td>{{ req.btp.user.username }}</td>
+
+    {% if req.approval_status == 0 %}
+    <td>WAITING</td>
+    {% elif req.approval_status == 1 %}
+    <td>Waiting for HOD approval</td>
+    {% elif req.approval_status == 2 %}
+    <td>Approved</td>
+    {% else %}
+    <td>Rejected</td>
+    {% endif %}
+
+    <td>{{ req.remark }}</td>
+  </tr>
+
+  {% endfor %}
+
+</table>
+
+</div>
+
+<div class="jumbotron">
+
+  <h3>Other Requests</h3>
+
+  <table style="width:100%">
+  <tr>
+    <th>Department</th>
+
+     <th>Approval Status</th>
+     <th>Remark</th>
+  </tr>
+
+  {% for req in otherRequests %}
+
+  <tr>
+
+    <td>{{ req.other.user.username }}</td>
+
+
+
+    {% if req.approval_status == 0 %}
+    <td>WAITING</td>
+    {% elif req.approval_status == 2 %}
+    <td>Approved</td>
+    {% else %}
+    <td>Rejected</td>
+    {% endif %}
+
+    <td>{{ req.remark }}</td>
+  </tr>
+
+  {% endfor %}
+
+
+</table>
+
+</div>
+
+
+
+{% endblock %}
