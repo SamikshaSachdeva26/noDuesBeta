@@ -108,6 +108,7 @@ def studentIndex(request):
                                                 )
               #  labx.save()
 
+        return HttpResponseRedirect(reverse('mainPage'))      
 
 
 

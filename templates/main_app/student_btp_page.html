@@ -9,19 +9,28 @@
 
   <table style="width:100%">
   <tr>
-    <th>Student</th>
     <th>BTP Professor</th>
     <th>Approval Status</th>
+    <th>Remark</th>
   </tr>
 
   {% for req in btpRequests %}
 
   <tr>
-    <td>{{ req.student.user.username }}</td>
+
     <td>{{ req.btp.user.username }}</td>
+
     {% if req.approval_status == 0 %}
     <td>WAITING</td>
+    {% elif req.approval_status == 1 %}
+    <td>Waiting for HOD approval</td>
+    {% elif req.approval_status == 2 %}
+    <td>Approved</td>
+    {% else %}
+    <td>Rejected</td>
     {% endif %}
+
+    <td>{{ req.remark }}</td>
   </tr>
 
   {% endfor %}

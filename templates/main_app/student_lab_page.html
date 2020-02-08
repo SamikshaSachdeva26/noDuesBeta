@@ -3,32 +3,41 @@
 
 {% block body_block %}
 
+
 <div class="jumbotron">
 
-  <h3>Lab Requests</h3>
+    <h3>Lab Requests</h3>
 
-  <table style="width:100%">
-  <tr>
-    <th>Student</th>
-    <th>Lab</th>
-    <th>Approval Status</th>
-  </tr>
+    <table style="width:100%">
+    <tr>
+      <th>Lab</th>
+      <th>Approval Status</th>
+      <th>Remark</th>
 
-  {% for req in labRequests %}
+    </tr>
 
-  <tr>
-    <td>{{ req.student.user.username }}</td>
-    <td>{{ req.lab.user.username }}</td>
-    {% if req.approval_status == 0 %}
-    <td>WAITING</td>
-    {% endif %}
-  </tr>
+    {% for req in labRequests %}
 
-  {% endfor %}
+    <tr>
+      <td>{{ req.lab.user.username }}</td>
 
+      {% if req.approval_status == 0 %}
+      <td>WAITING</td>
+      {% elif req.approval_status == 1 %}
+      <td>Waiting for HOD approval</td>
+      {% elif req.approval_status == 2 %}
+      <td>Approved</td>
+      {% else %}
+      <td>Rejected</td>
+      {% endif %}
 
-</table>
+      <td>{{ req.remark }}</td>
+    </tr>
 
-</div>
+    {% endfor %}
+
+    </table>
+
+  </div>
 
 {% endblock %}

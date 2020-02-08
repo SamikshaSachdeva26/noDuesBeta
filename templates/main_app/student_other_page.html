@@ -9,25 +9,37 @@
 
   <table style="width:100%">
   <tr>
-    <th>Student</th>
     <th>Department</th>
-    <th>Approval Status</th>
+
+     <th>Approval Status</th>
+     <th>Remark</th>
   </tr>
 
   {% for req in otherRequests %}
 
   <tr>
-    <td>{{ req.student.user.username }}</td>
+
     <td>{{ req.other.user.username }}</td>
+
+
+
     {% if req.approval_status == 0 %}
     <td>WAITING</td>
+    {% elif req.approval_status == 2 %}
+    <td>Approved</td>
+    {% else %}
+    <td>Rejected</td>
     {% endif %}
+
+    <td>{{ req.remark }}</td>
   </tr>
 
   {% endfor %}
 
+
 </table>
 
 </div>
+
 
 {% endblock %}
