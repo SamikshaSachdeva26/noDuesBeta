@@ -44,7 +44,12 @@ def mainPage(request):
                     if len(dict4)>0:
                         return HttpResponseRedirect(reverse('btpIndex'))
                     else:
-                        return HttpResponse("unable to log in")
+                        dict5 = HODUserInfo.objects.filter(user=request.user)
+                        if len(dict5)>0:
+                            return HttpResponseRedirect(reverse('hodIndex'))
+                        else:
+                            return HttpResponse("unable to log in")
+
     else:
         #not logged in
         return render(request, 'main_app/base.html')
@@ -150,6 +155,25 @@ def otherIndex(request):
 
         requests = OtherRequest.objects.filter(other__user=request.user, approval_status=0)
         return render(request, 'main_app/other_main_page.html', {'requests': requests});
+
+    return HttpResponseRedirect(reverse('mainPage'))
+
+
+def hodIndex(request):
+
+    if request.user.is_authenticated:
+
+        #load requests to library etc.
+
+        dicts = HODUserInfo.objects.filter(user=request.user)
+        for dict in dicts:
+            department = dict.department
+
+            requests = LabRequests.objects.filter(lab__department=department, approval_status=1)
+            requests2=BTPRequest.objects.filter(btp__department=department, approval_status=1)
+            return render(request, 'main_app/hod_main_page.html', {'requests': requests, 'requests2':requests2});
+
+
 
     return HttpResponseRedirect(reverse('mainPage'))
 
@@ -274,6 +298,51 @@ def registerLab(request):
 
     return render(request, 'main_app/register_page.html', {'user_form': user_form, 'info_form': info_form, 'registered': registered, 'registerFlag': 1})
 
+def registerHOD(request):
+    registered = False
+
+    #self explanatory
+
+    if request.method == "POST":
+        user_form = HODUserForm(data=request.POST)
+        info_form = HODInfoForm(data=request.POST)
+
+        if user_form.is_valid() and info_form.is_valid():
+            user = user_form.save();
+            user.set_password(user.password)
+            user.save()
+
+            profile = info_form.save(commit=False)
+            profile.user = user;
+
+            profile.save()
+
+            registered = True
+
+            if user:
+                if user.is_active:
+                    login(request, user)
+                    return HttpResponseRedirect(reverse('hodIndex'))
+
+                else:
+                    return HttpResponse('ACCOUNT NOT ACTIVE')
+            else:
+                print("someone tried to login and failed")
+                print("Username: {} Password: {}".formar(username, password))
+                return HttpResponse("invalid login details supplied")
+
+        else:
+            print(user_form.errors, info_form.errors)
+
+    else:
+
+        user_form=HODUserForm()
+        info_form=HODInfoForm()
+
+    return render(request, 'main_app/register_page.html', {'user_form': user_form, 'info_form': info_form, 'registered': registered, 'registerFlag': 4})
+
+
+
 def registerOther(request):
     registered = False
 
@@ -391,7 +460,11 @@ def user_login(request):
                             if len(dict4)>0:
                                 return HttpResponseRedirect(reverse('btpIndex'))
                             else:
-                                return HttpResponse("unable to log in")
+                                dict5 = HODUserInfo.objects.filter(user=request.user)
+                                if len(dict5)>0:
+                                    return HttpResponseRedirect(reverse('hodIndex'))
+                                else:
+                                    return HttpResponse("unable to log in")
 
             else:
                 return HttpResponse('ACCOUNT NOT ACTIVE')

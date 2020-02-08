@@ -25,6 +25,8 @@
           <form action="{% url 'main_app:registerOther' %}" method="post">
           {% elif registerFlag == 3 %}
           <form action="{% url 'main_app:registerBTP' %}" method="post">
+          {% else %}
+          <form action="{% url 'main_app:registerHOD' %}" method="post">
           {% endif %}
             {% csrf_token %}
             {{ user_form.as_p }}

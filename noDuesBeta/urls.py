@@ -24,6 +24,7 @@ urlpatterns = [
     re_path(r'^labIndex/$', views.labIndex, name='labIndex'),
     re_path(r'^otherIndex/$', views.otherIndex, name='otherIndex'),
     re_path(r'^btpIndex/$', views.btpIndex, name='btpIndex'),
+    re_path(r'^hodIndex/$', views.hodIndex, name='hodIndex'),
     re_path(r'^main_app/',include('main_app.urls')),
     path('admin/', admin.site.urls),
     re_path(r'^logout/$', views.user_logout, name='logout'),
