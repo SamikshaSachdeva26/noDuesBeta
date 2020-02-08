@@ -350,6 +350,96 @@ def otherIndex(request):
 
 def hodIndex(request):
 
+    p = 0
+    q = 0
+    if request.POST:
+        print(request.POST)
+
+        dicts = HODUserInfo.objects.get(user=request.user)
+
+        if 'AcceptLAB' in request.POST:
+            for req in LabRequests.objects.filter(lab__department=dicts.department, approval_status=1):
+                # try:
+                p = 1
+                stud = str(req.student.rollnumber)+str(req.lab.user.username)
+                print(stud)
+                print(request.POST.getlist(stud))
+                if request.POST.getlist(stud)[0] == 'YES':
+                    # req.update(approval_status=1, remark=request.POST.getlist(stud))
+                    print("YESSS")
+                    req.approval_status = 2
+                    req.remark = request.POST.getlist(stud)[1]
+                    req.save()
+                else:
+                    print("Nahi hua")
+
+        elif 'RejectLAB' in request.POST:
+            for req in LabRequests.objects.filter(lab__department=dicts.department, approval_status=1):
+                # try:
+                p = 1 
+                stud = str(req.student.rollnumber)+str(req.lab.user.username)
+                print(stud)
+                print(request.POST.getlist(stud)[0])
+                if request.POST.getlist(stud)[0] == 'YES':
+                    # req.update(approval_status=1, remark=request.POST.getlist(stud))
+                    req.approval_status = 3
+                    req.remark = request.POST.getlist(stud)[1]
+                    req.save()
+                else:
+                    print("Nahi hua")
+
+        if 'AcceptBTP' in request.POST:
+            for req in BTPRequest.objects.filter(btp__department=dicts.department, approval_status=1):
+                # try:
+                q = 1
+                stud = str(req.student.rollnumber)+str(req.btp.user.username)
+                print(stud)
+                print(request.POST.getlist(stud))
+                if request.POST.getlist(stud)[0] == 'YES':
+                    # req.update(approval_status=1, remark=request.POST.getlist(stud))
+                    print("YESSS")
+                    req.approval_status = 2
+                    req.remark = request.POST.getlist(stud)[1]
+                    req.save()
+                else:
+                    print("Nahi hua")
+
+
+
+        elif 'RejectBTP' in request.POST:
+            for req in BTPRequest.objects.filter(btp__department=dicts.department, approval_status=1):
+                # try:
+                q = 1
+                stud = str(req.student.rollnumber)+str(req.btp.user.username)
+                print(stud)
+                print(request.POST.getlist(stud)[0])
+                if request.POST.getlist(stud)[0] == 'YES':
+                    # req.update(approval_status=1, remark=request.POST.getlist(stud))
+                    req.approval_status = 3
+                    req.remark = request.POST.getlist(stud)[1]
+                    req.save()
+                else:
+                    print("Nahi hua")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     if request.user.is_authenticated:
 
         #load requests to library etc.
@@ -360,7 +450,7 @@ def hodIndex(request):
 
             requests = LabRequests.objects.filter(lab__department=department, approval_status=1)
             requests2=BTPRequest.objects.filter(btp__department=department, approval_status=1)
-            return render(request, 'main_app/hod_main_page.html', {'requests': requests, 'requests2':requests2});
+            return render(request, 'main_app/hod_main_page.html', {'requests': requests, 'requests2':requests2, 'p' : p, 'q' : q });
 
 
 
@@ -756,8 +846,10 @@ def apply_page(request):
                     labrc = labreqs.get(lab=labx)
                 except:
                     labrc = None
+                print(labrc,"labrc")
                 if labrc:
-                    if labrc.approval_status in (0,1):
+                    print(labrc,"labrc",labrc.approval_status)
+                    if labrc.approval_status in (0,1,2):
                         arr.append(1)
                     else:
                         arr.append(0)
@@ -780,40 +872,40 @@ def apply_page(request):
 
 
     if btpreq:
-        if btpreq.approval_status in (0,1):
+        if btpreq.approval_status in (0,1,2):
             b = 1
 
 
     for req in othreqs:
-        if req.other.user.username == 'LibraryCCC' and req.approval_status in (0,1) :
+        if req.other.user.username == 'LibraryCCC' and req.approval_status in (0,1,2) :
             l = 1
-        if req.other.user.username == 'LOHIT'  and req.approval_status in (0,1) :
+        if req.other.user.username == 'LOHIT'  and req.approval_status in (0,1,2) :
             h = 1
-        if req.other.user.username == 'SIANG' and req.approval_status in (0,1) :
+        if req.other.user.username == 'SIANG' and req.approval_status in (0,1,2) :
             h = 1
-        if req.other.user.username == 'DIHING' and req.approval_status in (0,1) :
+        if req.other.user.username == 'DIHING' and req.approval_status in (0,1,2) :
             h = 1
-        if req.other.user.username == 'MANAS' and req.approval_status in (0,1) :
+        if req.other.user.username == 'MANAS' and req.approval_status in (0,1,2) :
             h = 1
-        if req.other.user.username == 'KAPILI' and req.approval_status in (0,1) :
+        if req.other.user.username == 'KAPILI' and req.approval_status in (0,1,2) :
             h = 1
-        if req.other.user.username == 'UMIAM' and req.approval_status in (0,1) :
+        if req.other.user.username == 'UMIAM' and req.approval_status in (0,1,2) :
             h = 1
-        if req.other.user.username == 'BRAHMAPUTRA' and req.approval_status in (0,1) :
+        if req.other.user.username == 'BRAHMAPUTRA' and req.approval_status in (0,1,2) :
             h = 1
-        if req.other.user.username == 'BARAK' and req.approval_status in (0,1) :
+        if req.other.user.username == 'BARAK' and req.approval_status in (0,1,2) :
             h = 1
-        if req.other.user.username == 'KAMENG' and req.approval_status in (0,1) :
+        if req.other.user.username == 'KAMENG' and req.approval_status in (0,1,2) :
             h = 1
-        if req.other.user.username == 'MSH' and req.approval_status in (0,1) :
+        if req.other.user.username == 'MSH' and req.approval_status in (0,1,2) :
             h = 1
-        if req.other.user.username == 'DHANSIRI' and req.approval_status in (0,1) :
+        if req.other.user.username == 'DHANSIRI' and req.approval_status in (0,1,2) :
             h = 1
-        if req.other.user.username == 'SUBANSIRI' and req.approval_status in (0,1) :
+        if req.other.user.username == 'SUBANSIRI' and req.approval_status in (0,1,2) :
             h = 1
-        if req.other.user.username == 'DIBANG' and req.approval_status in (0,1) :
+        if req.other.user.username == 'DIBANG' and req.approval_status in (0,1,2) :
             h = 1
-        if req.other.user.username == 'DISANG' and req.approval_status in (0,1) :
+        if req.other.user.username == 'DISANG' and req.approval_status in (0,1,2) :
             h = 1
 
 

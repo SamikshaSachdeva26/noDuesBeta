@@ -26,7 +26,7 @@
     <div class="container text-center">
       <h3>Hello {{request.user.username}}</h3>
     </div>
-
+    {% if p %}
     <div class="container">
       <div class="jumbotron">
 
@@ -56,7 +56,7 @@
         {% for req in requests %}
 
         <tr>
-          <td><input class="form-check-input" type="checkbox" value="{{ req.student.rollnumber }}" id="{{ req.student.rollnumber }}" name="{{ req.student.rollnumber }}{{ req.lab.user.username }}" ></td>
+          <td><input class="form-check-input" type="checkbox" value="YES" id="{{ req.student.rollnumber }}" name="{{ req.student.rollnumber }}{{ req.lab.user.username }}" ></td>
           <td>{{ req.student.rollnumber }}</td>
           <td>{{ req.student.user.username }}</td>
           <td>{{ req.lab.user.username }}</td>
@@ -79,19 +79,24 @@
 
       </table>
 
-      <button type="submit" name="Accept" class="btn btn-primary">Accept</button>
-      <button type="submit" name="Reject" class="btn btn-danger">Reject</button>
+      <button type="submit" name="AcceptLAB" class="btn btn-primary">Accept</button>
+      <button type="submit" name="RejectLAB" class="btn btn-danger">Reject</button>
 
     </form>
 
       </div>
     </div>
+    {% else %}
+    <div class="container ">
+      <br><h3>No New Lab Approvals...</h3>
+    </div>
+    {% endif %}
 
 
     <div class="container text-center">
 
     </div>
-
+    {% if q %}
     <div class="container">
       <div class="jumbotron">
 
@@ -123,7 +128,7 @@
         {% for req in requests2 %}
 
         <tr>
-          <td><input class="form-check-input" type="checkbox" value="{{ req.student.rollnumber }}" id="{{ req.student.rollnumber }}{{ req.btp.user.username }}" name="{{ req.student.rollnumber }}{{ req.btp.user.username }}" ></td>
+          <td><input class="form-check-input" type="checkbox" value="YES" id="{{ req.student.rollnumber }}{{ req.btp.user.username }}" name="{{ req.student.rollnumber }}{{ req.btp.user.username }}" ></td>
           <td>{{ req.student.rollnumber }}</td>
           <td>{{ req.student.user.username }}</td>
           <td>{{ req.btp.user.username }}</td>
@@ -144,14 +149,18 @@
 
       </table>
 
-      <button type="submit" name="Accept" class="btn btn-primary">Accept</button>
-      <button type="submit" name="Reject" class="btn btn-danger">Reject</button>
+      <button type="submit" name="AcceptBTP" class="btn btn-primary">Accept</button>
+      <button type="submit" name="RejectBTP" class="btn btn-danger">Reject</button>
 
     </form>
 
       </div>
     </div>
-
+    {% else %}
+    <div class="container">
+      <h3 >No New BTP Approvals...</h3>
+    </div>
+    {% endif %}
     <script>
 	function myFunction()
 	{
