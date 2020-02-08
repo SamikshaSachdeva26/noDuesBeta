@@ -108,7 +108,7 @@ def studentIndex(request):
                                                 )
               #  labx.save()
 
-        return HttpResponseRedirect(reverse('mainPage'))      
+        return HttpResponseRedirect(reverse('mainPage'))
 
 
 
@@ -127,6 +127,16 @@ def studentIndex(request):
 
 
 def labIndex(request):
+
+    if request.POST:
+        print(request.POST);
+        if 'Accept' in request.POST:
+            pass
+        elif 'Reject' in request.POST:
+            pass
+
+
+
 
     if request.user.is_authenticated:
 
