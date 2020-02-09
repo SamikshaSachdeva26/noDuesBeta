@@ -97,7 +97,35 @@ def studentIndex(request):
                                                 )
 
 
-            
+        varlib = request.POST.get('Gymkhana',None)
+        if varlib:
+            # print("Print-----varlib")
+            try:
+                print("try....")
+                vlib = OtherRequest.objects.get(student=student, other=OtherUserInfo.objects.get(user__username="Gymkhana"))
+                print("Print-----varlib",vlib)
+            except:
+                print("vlib none")
+                vlib = None
+
+            if vlib:
+                vlib.delete()
+                print("vlib deleted")
+                lib = OtherRequest.objects.create(  other=OtherUserInfo.objects.get(user__username="Gymkhana"),
+                                                student=StudentUserInfo.objects.get(user=request.user),
+                                                remark="",
+                                                date_sent=datetime.date.today(),
+                                                approval_status=0
+                                                )
+                print("vlib created")
+            else:
+                print("else bahar wala")
+                lib = OtherRequest.objects.create(  other=OtherUserInfo.objects.get(user__username="Gymkhana"),
+                                                student=StudentUserInfo.objects.get(user=request.user),
+                                                remark="",
+                                                date_sent=datetime.date.today(),
+                                                approval_status=0
+                                                )
            # lib.save()
         varlib = request.POST.get('HOSTEL',None)
         if varlib:
@@ -225,11 +253,13 @@ def studentIndex(request):
 
 def labIndex(request):
 
+    p = 0
     if request.POST:
         print(request.POST);
         if 'Accept' in request.POST:
             for req in LabRequests.objects.filter(lab__user=request.user, approval_status=0):
                 # try:
+                p = 1
                 stud = str(req.student.rollnumber)
                 print(stud)
                 print(request.POST.getlist(stud)[0])
@@ -244,6 +274,7 @@ def labIndex(request):
         elif 'Reject' in request.POST:
             for req in LabRequests.objects.filter(lab__user=request.user, approval_status=0):
                 # try:
+                p = 1
                 stud = str(req.student.rollnumber)
                 print(stud)
                 print(request.POST.getlist(stud)[0])
@@ -254,6 +285,8 @@ def labIndex(request):
                     req.save()
                 # except:
                 # print("Nahi hua")
+        requests = LabRequests.objects.filter(lab__user=request.user, approval_status=0)
+        return render(request, 'main_app/lab_main_page.html', {'requests': requests, 'p' : p});
 
 
     if request.user.is_authenticated:
@@ -261,16 +294,23 @@ def labIndex(request):
         #render requests to a particular lab
 
         requests = LabRequests.objects.filter(lab__user=request.user, approval_status=0)
-        return render(request, 'main_app/lab_main_page.html', {'requests': requests});
+        if requests:
+            p = 1
+        return render(request, 'main_app/lab_main_page.html', {'requests': requests, 'p' : p});
 
     return HttpResponseRedirect(reverse('mainPage'))
 
 def btpIndex(request):
+
+    p = 0
+   
+
     if request.POST:
         print(request.POST);
         if 'Accept' in request.POST:
             for req in BTPRequest.objects.filter(btp__user=request.user, approval_status=0):
                 # try:
+                p = 1
                 stud = str(req.student.rollnumber)
                 print(stud)
                 print(request.POST.getlist(stud)[0])
@@ -285,6 +325,7 @@ def btpIndex(request):
         elif 'Reject' in request.POST:
             for req in BTPRequest.objects.filter(btp__user=request.user, approval_status=0):
                 # try:
+                p = 1
                 stud = str(req.student.rollnumber)
                 print(stud)
                 print(request.POST.getlist(stud)[0])
@@ -295,8 +336,8 @@ def btpIndex(request):
                     req.save()
                 # except:
                 # print("Nahi hua")
-
-
+        requests = BTPRequest.objects.filter(btp__user=request.user, approval_status=0)
+        return render(request, 'main_app/btp_main_page.html', {'requests': requests, 'p' : p});
 
 
     if request.user.is_authenticated:
@@ -304,23 +345,28 @@ def btpIndex(request):
         #load requests to a particular btp prof
 
         requests = BTPRequest.objects.filter(btp__user=request.user, approval_status=0)
-        return render(request, 'main_app/btp_main_page.html', {'requests': requests});
+        if requests:
+            p = 1
+        return render(request, 'main_app/btp_main_page.html', {'requests': requests, 'p' : p});
 
     return HttpResponseRedirect(reverse('mainPage'))
 
 def otherIndex(request):
+
+    p = 0
 
     if request.POST:
         print(request.POST);
         if 'Accept' in request.POST:
             for req in OtherRequest.objects.filter(other__user=request.user, approval_status=0):
                 # try:
+                p = 1
                 stud = str(req.student.rollnumber)
                 print(stud)
                 print(request.POST.getlist(stud)[0])
                 if request.POST.getlist(stud)[0] == 'YES':
                     # req.update(approval_status=1, remark=request.POST.getlist(stud))
-                    req.approval_status = 1
+                    req.approval_status = 2
                     req.remark = request.POST.getlist(stud)[1]
                     req.save()
                 # except:
@@ -329,6 +375,7 @@ def otherIndex(request):
         elif 'Reject' in request.POST:
             for req in OtherRequest.objects.filter(other__user=request.user, approval_status=0):
                 # try:
+                p = 1
                 stud = str(req.student.rollnumber)
                 print(stud)
                 print(request.POST.getlist(stud)[0])
@@ -338,12 +385,18 @@ def otherIndex(request):
                     req.remark = request.POST.getlist(stud)[1]
                     req.save()
 
+        requests = OtherRequest.objects.filter(other__user=request.user, approval_status=0)
+        return render(request, 'main_app/other_main_page.html', {'requests': requests, 'p' : p });
+
+
     if request.user.is_authenticated:
 
         #load requests to library etc.
 
         requests = OtherRequest.objects.filter(other__user=request.user, approval_status=0)
-        return render(request, 'main_app/other_main_page.html', {'requests': requests});
+        if requests:
+            p = 1
+        return render(request, 'main_app/other_main_page.html', {'requests': requests, 'p' : p });
 
     return HttpResponseRedirect(reverse('mainPage'))
 
@@ -833,6 +886,7 @@ def apply_page(request):
     b = 0
     op = 0
     k = 0
+    g = 0
     arr = []
     # print(labs)
 
@@ -879,6 +933,8 @@ def apply_page(request):
     for req in othreqs:
         if req.other.user.username == 'LibraryCCC' and req.approval_status in (0,1,2) :
             l = 1
+        if req.other.user.username == 'Gymkhana' and req.approval_status in (0,1,2) :
+            g = 1
         if req.other.user.username == 'LOHIT'  and req.approval_status in (0,1,2) :
             h = 1
         if req.other.user.username == 'SIANG' and req.approval_status in (0,1,2) :
@@ -910,11 +966,11 @@ def apply_page(request):
 
 
 
-    if l == 1 and h == 1 and b == 1 and op == 0 :
+    if l == 1 and h == 1 and b == 1 and op == 0 and g == 1 :
         k = 1
 
 
 
     print(l,h,b,op,k)
     return render(request, 'main_app/apply.html', {'student' : student, 'btps' : btps, 'labs' : labs, 'labreqs': labreqs, 'othreqs': othreqs, 'btpreq' : btpreq,
-                                                     'l' : l, 'h' : h, 'b' : b ,'op' : op , 'k' : k , 'arr' : arr })
+                                                     'l' : l, 'h' : h, 'b' : b ,'op' : op , 'k' : k , 'arr' : arr, 'g' : g })

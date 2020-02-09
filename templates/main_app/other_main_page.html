@@ -27,7 +27,7 @@
     <div class="container text-center">
       <h3>Hello {{request.user.username}}</h3>
     </div>
-
+    {% if p %}
     <div class="container">
       <div class="jumbotron">
 
@@ -82,7 +82,11 @@
 
       </div>
     </div>
-
+    {% else %}
+    <div class="container ">
+      <br><h3>No New Approvals...</h3>
+    </div>
+    {% endif %}
     <script>
   function myFunction()
   {
