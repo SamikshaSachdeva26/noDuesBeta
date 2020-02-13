@@ -403,8 +403,7 @@ def otherIndex(request):
 
 def hodIndex(request):
 
-    p = 0
-    q = 0
+   
     if request.POST:
         print(request.POST)
 
@@ -413,7 +412,7 @@ def hodIndex(request):
         if 'AcceptLAB' in request.POST:
             for req in LabRequests.objects.filter(lab__department=dicts.department, approval_status=1):
                 # try:
-                p = 1
+              
                 stud = str(req.student.rollnumber)+str(req.lab.user.username)
                 print(stud)
                 print(request.POST.getlist(stud))
@@ -429,7 +428,7 @@ def hodIndex(request):
         elif 'RejectLAB' in request.POST:
             for req in LabRequests.objects.filter(lab__department=dicts.department, approval_status=1):
                 # try:
-                p = 1 
+               
                 stud = str(req.student.rollnumber)+str(req.lab.user.username)
                 print(stud)
                 print(request.POST.getlist(stud)[0])
@@ -444,7 +443,7 @@ def hodIndex(request):
         if 'AcceptBTP' in request.POST:
             for req in BTPRequest.objects.filter(btp__department=dicts.department, approval_status=1):
                 # try:
-                q = 1
+              
                 stud = str(req.student.rollnumber)+str(req.btp.user.username)
                 print(stud)
                 print(request.POST.getlist(stud))
@@ -462,7 +461,7 @@ def hodIndex(request):
         elif 'RejectBTP' in request.POST:
             for req in BTPRequest.objects.filter(btp__department=dicts.department, approval_status=1):
                 # try:
-                q = 1
+              
                 stud = str(req.student.rollnumber)+str(req.btp.user.username)
                 print(stud)
                 print(request.POST.getlist(stud)[0])
@@ -474,6 +473,7 @@ def hodIndex(request):
                 else:
                     print("Nahi hua")
 
+     #   return HttpResponseRedirect(reverse('mainPage'))
 
 
 
@@ -487,7 +487,7 @@ def hodIndex(request):
 
 
 
-
+   # print(p,q);
 
 
 
@@ -500,10 +500,9 @@ def hodIndex(request):
         dicts = HODUserInfo.objects.filter(user=request.user)
         for dict in dicts:
             department = dict.department
-
             requests = LabRequests.objects.filter(lab__department=department, approval_status=1)
             requests2=BTPRequest.objects.filter(btp__department=department, approval_status=1)
-            return render(request, 'main_app/hod_main_page.html', {'requests': requests, 'requests2':requests2, 'p' : p, 'q' : q });
+            return render(request, 'main_app/hod_main_page.html', {'requests': requests, 'requests2':requests2 });
 
 
 
@@ -869,7 +868,7 @@ def apply_page(request):
         btpreq = None
 
     try:
-        btps = BTPUserInfo.objects.filter(department_id=student.department_id)
+        btps = BTPUserInfo.objects.all()
     except BTPUserInfo.DoesNotExist:
         btps = None
 

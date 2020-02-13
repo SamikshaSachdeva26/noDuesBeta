@@ -26,8 +26,10 @@
     <div class="container text-center">
       <h3>Hello {{request.user.username}}</h3>
     </div>
-    {% if p %}
+   
+
     <div class="container">
+      iuhnj
       <div class="jumbotron">
 
         <h3>Lab Requests</h3>
@@ -41,62 +43,54 @@
           {% csrf_token %}
 
 
-        <table style="width:100%", id="myTable">
-        <tr>
-          <th>Selected</th>
-          <th>Roll Number</th>
-          <th>Student</th>
-          <th>Sent To</th>
-          <th>Date Sent</th>
-          <th>Approval Status</th>
-          <th>Remark</th>
-          <th></th>
-        </tr>
+            <table style="width:100%", id="myTable">
+            <tr>
+              <th>Selected</th>
+              <th>Roll Number</th>
+              <th>Student</th>
+              <th>Sent To</th>
+              <th>Date Sent</th>
+              <th>Approval Status</th>
+              <th>Remark</th>
+              <th></th>
+            </tr>
 
-        {% for req in requests %}
+            {% for req in requests %}
 
-        <tr>
-          <td><input class="form-check-input" type="checkbox" value="YES" id="{{ req.student.rollnumber }}" name="{{ req.student.rollnumber }}{{ req.lab.user.username }}" ></td>
-          <td>{{ req.student.rollnumber }}</td>
-          <td>{{ req.student.user.username }}</td>
-          <td>{{ req.lab.user.username }}</td>
-          <td>{{ req.date_sent }}</td>
-          {% if req.approval_status == 0 %}
-          <td>WAITING</td>
-          {% elif req.approval_status == 1 %}
-          <td>Waiting for HOD approval</td>
-          {% elif req.approval_status == 2 %}
-          <td>Approved</td>
-          {% else %}
-          <td>Rejected</td>
-          {% endif %}
-          <td><input class="form-check-input" type="text" placeholder="Remark..." id="{{ req.student.rollnumber }}{{ req.lab.user.username }}" name="{{ req.student.rollnumber }}{{ req.lab.user.username }}" ></td>
-        </tr>
+            <tr>
+              <td><input class="form-check-input" type="checkbox" value="YES" id="{{ req.student.rollnumber }}" name="{{ req.student.rollnumber }}{{ req.lab.user.username }}" ></td>
+              <td>{{ req.student.rollnumber }}</td>
+              <td>{{ req.student.user.username }}</td>
+              <td>{{ req.lab.user.username }}</td>
+              <td>{{ req.date_sent }}</td>
+              {% if req.approval_status == 0 %}
+              <td>WAITING</td>
+              {% elif req.approval_status == 1 %}
+              <td>Waiting for HOD approval</td>
+              {% elif req.approval_status == 2 %}
+              <td>Approved</td>
+              {% else %}
+              <td>Rejected</td>
+              {% endif %}
+              <td><input class="form-check-input" type="text" placeholder="Remark..." id="{{ req.student.rollnumber }}{{ req.lab.user.username }}" name="{{ req.student.rollnumber }}{{ req.lab.user.username }}" ></td>
+            </tr>
 
-        {% endfor %}
+            {% endfor %}
 
 
 
-      </table>
 
-      <button type="submit" name="AcceptLAB" class="btn btn-primary">Accept</button>
-      <button type="submit" name="RejectLAB" class="btn btn-danger">Reject</button>
+            </table>
 
-    </form>
+            <button type="submit" name="AcceptLAB" class="btn btn-primary">Accept</button>
+            <button type="submit" name="RejectLAB" class="btn btn-danger">Reject</button>
+
+        </form>
+
 
       </div>
     </div>
-    {% else %}
-    <div class="container ">
-      <br><h3>No New Lab Approvals...</h3>
-    </div>
-    {% endif %}
-
-
-    <div class="container text-center">
-
-    </div>
-    {% if q %}
+   
     <div class="container">
       <div class="jumbotron">
 
@@ -111,98 +105,94 @@
           {% csrf_token %}
 
 
-        <table style="width:100%", id="myTable1">
-        <tr>
-          <th>Selected</th>
-          <th>Roll Number</th>
-          <th>Student</th>
-          <th>Sent To</th>
-          <th>Date Sent</th>
-          <th>Approval Status</th>
-          <th>Remark</th>
-          <th></th>
-        </tr>
+            <table style="width:100%", id="myTable1">
+            <tr>
+              <th>Selected</th>
+              <th>Roll Number</th>
+              <th>Student</th>
+              <th>Sent To</th>
+              <th>Date Sent</th>
+              <th>Approval Status</th>
+              <th>Remark</th>
+              <th></th>
+            </tr>
 
 
 
-        {% for req in requests2 %}
+            {% for req in requests2 %}
 
-        <tr>
-          <td><input class="form-check-input" type="checkbox" value="YES" id="{{ req.student.rollnumber }}{{ req.btp.user.username }}" name="{{ req.student.rollnumber }}{{ req.btp.user.username }}" ></td>
-          <td>{{ req.student.rollnumber }}</td>
-          <td>{{ req.student.user.username }}</td>
-          <td>{{ req.btp.user.username }}</td>
-          <td>{{ req.date_sent }}</td>
-          {% if req.approval_status == 0 %}
-          <td>WAITING</td>
-          {% elif req.approval_status == 1 %}
-          <td>Waiting for HOD approval</td>
-          {% elif req.approval_status == 2 %}
-          <td>Approved</td>
-          {% else %}
-          <td>Rejected</td>
-          {% endif %}
-          <td><input class="form-check-input" type="text" placeholder="Remark..." id="{{ req.student.rollnumber }}{{ req.btp.user.username }}" name="{{ req.student.rollnumber }}{{ req.btp.user.username }}" ></td>
-        </tr>
+            <tr>
+              <td><input class="form-check-input" type="checkbox" value="YES" id="{{ req.student.rollnumber }}{{ req.btp.user.username }}" name="{{ req.student.rollnumber }}{{ req.btp.user.username }}" ></td>
+              <td>{{ req.student.rollnumber }}</td>
+              <td>{{ req.student.user.username }}</td>
+              <td>{{ req.btp.user.username }}</td>
+              <td>{{ req.date_sent }}</td>
+              {% if req.approval_status == 0 %}
+              <td>WAITING</td>
+              {% elif req.approval_status == 1 %}
+              <td>Waiting for HOD approval</td>
+              {% elif req.approval_status == 2 %}
+              <td>Approved</td>
+              {% else %}
+              <td>Rejected</td>
+              {% endif %}
+              <td><input class="form-check-input" type="text" placeholder="Remark..." id="{{ req.student.rollnumber }}{{ req.btp.user.username }}" name="{{ req.student.rollnumber }}{{ req.btp.user.username }}" ></td>
+            </tr>
 
-        {% endfor %}
+            {% endfor %}
 
-      </table>
+            </table>
 
-      <button type="submit" name="AcceptBTP" class="btn btn-primary">Accept</button>
-      <button type="submit" name="RejectBTP" class="btn btn-danger">Reject</button>
+            <button type="submit" name="AcceptBTP" class="btn btn-primary">Accept</button>
+            <button type="submit" name="RejectBTP" class="btn btn-danger">Reject</button>
 
-    </form>
+        </form>
 
       </div>
     </div>
-    {% else %}
-    <div class="container">
-      <h3 >No New BTP Approvals...</h3>
-    </div>
-    {% endif %}
+   
     <script>
-	function myFunction()
-	{
-  	var input, filter, table, tr, td, i, txtValue;
-  	input = document.getElementById("myInput");
-  	filter = input.value;
-  	table = document.getElementById("myTable");
-  	tr = table.getElementsByTagName("tr");
-  	for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[1];
-    if (td)
-    {
-      txtValue = td.textContent || td.innerText;
-      if (txtValue.indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
+      	function myFunction()
+      	{
+        	var input, filter, table, tr, td, i, txtValue;
+        	input = document.getElementById("myInput");
+        	filter = input.value;
+        	table = document.getElementById("myTable");
+        	tr = table.getElementsByTagName("tr");
+        	for (i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName("td")[1];
+          if (td)
+          {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.indexOf(filter) > -1) {
+              tr[i].style.display = "";
+            } else {
+              tr[i].style.display = "none";
+            }
+          }
+        }
       }
-    }
-  }
-}
 
-function myFunction1()
-{
-  var input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById("myInput1");
-  filter = input.value;
-  table = document.getElementById("myTable1");
-  tr = table.getElementsByTagName("tr");
-  for (i = 0; i < tr.length; i++) {
-  td = tr[i].getElementsByTagName("td")[1];
-  if (td)
-  {
-    txtValue = td.textContent || td.innerText;
-    if (txtValue.indexOf(filter) > -1) {
-      tr[i].style.display = "";
-    } else {
-      tr[i].style.display = "none";
-    }
-  }
-}
-}
+      function myFunction1()
+      {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput1");
+        filter = input.value;
+        table = document.getElementById("myTable1");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[1];
+        if (td)
+        {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+      }
 </script>
 
   </body>
