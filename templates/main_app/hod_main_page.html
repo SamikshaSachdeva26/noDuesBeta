@@ -16,7 +16,10 @@
         <ul class="nav navbar-nav">
 
           <li><a class="navbar-link" href="{% url 'logout' %}">Log Out</a></li>
-        
+          <li><a class="navbar-link" href="{% url 'hodIndex' %}">Student Requests</a></li>
+          <li><a class="navbar-link" href="{% url 'labAccountRequests' %}">Lab Account Requests</a></li>
+          <li><a class="navbar-link" href="{% url 'btpAccountRequests' %}">BTP Account Requests</a></li>
+
           <li class="navbar-text" style="color:black">Lab Page</li>
 
         </ul>
@@ -27,7 +30,7 @@
     <div class="container text-center">
       <h3>Hello {{request.user.username}}</h3>
     </div>
-   
+
 
     <div class="container">
       <div class="jumbotron">
@@ -92,7 +95,7 @@
 
       </div>
     </div>
-   
+
     <div class="container">
       <div class="jumbotron">
         <p>{% if requests2.count > 0 %}</p>
@@ -154,7 +157,7 @@
         {% endif %}
       </div>
     </div>
-   
+
     <script>
         function myFunction()
         {
