@@ -292,11 +292,17 @@ def labIndex(request):
     if request.user.is_authenticated:
 
         #render requests to a particular lab
+        dict = LabUserInfo.objects.filter(user=request.user)
 
-        requests = LabRequests.objects.filter(lab__user=request.user, approval_status=0)
-        if requests:
-            p = 1
-        return render(request, 'main_app/lab_main_page.html', {'requests': requests, 'p' : p});
+        for dic in dict:
+            if dic.approval_status == 0:
+                return render(request, 'main_app/waiting_page.html')
+            else:
+                requests = LabRequests.objects.filter(lab__user=request.user, approval_status=0)
+                if requests:
+                    p = 1
+                return render(request, 'main_app/lab_main_page.html', {'requests': requests, 'p' : p});
+
 
     return HttpResponseRedirect(reverse('mainPage'))
 
@@ -390,6 +396,7 @@ def otherIndex(request):
     if request.user.is_authenticated:
 
         #load requests to library etc.
+
 
         requests = OtherRequest.objects.filter(other__user=request.user, approval_status=0)
         if requests:
@@ -861,12 +868,12 @@ def apply_page(request):
         btpreq = None
 
     try:
-        btps = BTPUserInfo.objects.all()
+        btps = BTPUserInfo.objects.filter(approval_status=1)
     except BTPUserInfo.DoesNotExist:
         btps = None
 
     try:
-        labs = LabUserInfo.objects.filter(department_id=student.department_id)
+        labs = LabUserInfo.objects.filter(department_id=student.department_id, approval_status=1)
     except LabUserInfo.DoesNotExist:
         labs = None
 
