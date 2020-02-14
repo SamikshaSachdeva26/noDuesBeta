@@ -973,3 +973,137 @@ def apply_page(request):
     print(l,h,b,op,k)
     return render(request, 'main_app/apply.html', {'student' : student, 'btps' : btps, 'labs' : labs, 'labreqs': labreqs, 'othreqs': othreqs, 'btpreq' : btpreq,
                                                      'l' : l, 'h' : h, 'b' : b ,'op' : op , 'k' : k , 'arr' : arr, 'g' : g })
+
+
+
+
+def hod_btp_approval_page(request):
+
+    
+    if request.POST:
+        print(request.POST)
+
+        dicts = HODUserInfo.objects.get(user=request.user)
+
+        if 'AcceptBTPAC' in request.POST:
+            print("RTY")
+            for req in BTPUserInfo.objects.filter(department=dicts.department, approval_status=0):
+                # try:
+
+                stud = str(req.user.username)
+                print(stud)
+                print(request.POST.get(stud))
+                if request.POST.get(stud) == 'YES':
+                    # req.update(approval_status=1, remark=request.POST.getlist(stud))
+                    print("YESSS")
+                    req.approval_status = 1
+                    req.save()
+                else:
+                    print("Nahi hua")
+
+            return HttpResponseRedirect(reverse('btpAccountRequests'))
+
+        elif 'RejectBTPAC' in request.POST:
+            for req in BTPUserInfo.objects.filter(department=dicts.department, approval_status=0):
+                # try:
+                stud = str(req.user.username)
+                print(stud)
+                print(request.POST.get(stud))
+                if request.POST.get(stud) == 'YES':
+                    # req.update(approval_status=1, remark=request.POST.getlist(stud))
+                    print("YESSSDELETED")
+                    req.approval_status = 1
+                    req.delete()
+                else:
+                    print("Nahi hua")
+
+            return HttpResponseRedirect(reverse('btpAccountRequests'))
+
+
+
+
+
+
+
+
+
+
+
+    if request.user.is_authenticated:
+
+        #load requests to library etc.
+
+        dicts = HODUserInfo.objects.filter(user=request.user)
+        for dict in dicts:
+            department = dict.department
+            requests = BTPUserInfo.objects.filter(department=department, approval_status=0)
+            return render(request, 'main_app/hod_btp_approval_page.html', {'requests': requests });
+
+
+
+    return HttpResponseRedirect(reverse('mainPage'))
+
+
+def hod_lab_approval_page(request):
+
+
+
+    if request.POST:
+        print(request.POST)
+
+        dicts = HODUserInfo.objects.get(user=request.user)
+
+        if 'AcceptLABAC' in request.POST:
+            print("RTY")
+            for req in LabUserInfo.objects.filter(department=dicts.department, approval_status=0):
+                # try:
+
+                stud = str(req.user.username)
+                print(stud)
+                print(request.POST.get(stud))
+                if request.POST.get(stud) == 'YES':
+                    # req.update(approval_status=1, remark=request.POST.getlist(stud))
+                    print("YESSS")
+                    req.approval_status = 1
+                    req.save()
+                else:
+                    print("Nahi hua")
+
+            return HttpResponseRedirect(reverse('labAccountRequests'))
+
+        elif 'RejectLABAC' in request.POST:
+            for req in LabUserInfo.objects.filter(department=dicts.department, approval_status=0):
+                # try:
+                stud = str(req.user.username)
+                print(stud)
+                print(request.POST.get(stud))
+                if request.POST.get(stud) == 'YES':
+                    # req.update(approval_status=1, remark=request.POST.getlist(stud))
+                    print("YESSSDELETED")
+                    req.approval_status = 1
+                    req.delete()
+                else:
+                    print("Nahi hua")
+
+            return HttpResponseRedirect(reverse('labAccountRequests'))
+
+
+
+
+    if request.user.is_authenticated:
+
+        #load requests to library etc.
+
+        dicts = HODUserInfo.objects.filter(user=request.user)
+        for dict in dicts:
+            department = dict.department
+            requests = LabUserInfo.objects.filter(department=department, approval_status=0)
+            return render(request, 'main_app/hod_lab_approval_page.html', {'requests': requests });
+
+
+
+    return HttpResponseRedirect(reverse('labAccountRequests'))
+
+
+
+
