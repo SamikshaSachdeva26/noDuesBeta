@@ -16,6 +16,7 @@
         <ul class="nav navbar-nav">
 
           <li><a class="navbar-link" href="{% url 'logout' %}">Log Out</a></li>
+        
           <li class="navbar-text" style="color:black">Lab Page</li>
 
         </ul>
@@ -26,16 +27,15 @@
     <div class="container text-center">
       <h3>Hello {{request.user.username}}</h3>
     </div>
-
+   
 
     <div class="container">
-
       <div class="jumbotron">
-
+        <p>{% if requests.count > 0 %}</p>
         <h3>Lab Requests</h3>
 
         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for roll no" title="Type in roll number">
-      	<br><br>
+        <br><br>
 
 
 
@@ -86,18 +86,20 @@
             <button type="submit" name="RejectLAB" class="btn btn-danger">Reject</button>
 
         </form>
-
+        {% else %}
+        <h2>NO LAB REQUESTS</h2>
+        {% endif %}
 
       </div>
     </div>
-
+   
     <div class="container">
       <div class="jumbotron">
-
+        <p>{% if requests2.count > 0 %}</p>
         <h3>BTP Requests</h3>
 
         <input type="text" id="myInput1" onkeyup="myFunction1()" placeholder="Search for roll no" title="Type in roll number">
-      	<br><br>
+        <br><br>
 
 
 
@@ -147,19 +149,21 @@
             <button type="submit" name="RejectBTP" class="btn btn-danger">Reject</button>
 
         </form>
-
+        {% else %}
+        <h2>NO BTP REQUESTS</h2>
+        {% endif %}
       </div>
     </div>
-
+   
     <script>
-      	function myFunction()
-      	{
-        	var input, filter, table, tr, td, i, txtValue;
-        	input = document.getElementById("myInput");
-        	filter = input.value;
-        	table = document.getElementById("myTable");
-        	tr = table.getElementsByTagName("tr");
-        	for (i = 0; i < tr.length; i++) {
+        function myFunction()
+        {
+          var input, filter, table, tr, td, i, txtValue;
+          input = document.getElementById("myInput");
+          filter = input.value;
+          table = document.getElementById("myTable");
+          tr = table.getElementsByTagName("tr");
+          for (i = 0; i < tr.length; i++) {
           td = tr[i].getElementsByTagName("td")[1];
           if (td)
           {
