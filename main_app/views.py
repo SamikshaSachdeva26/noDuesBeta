@@ -348,11 +348,16 @@ def btpIndex(request):
     if request.user.is_authenticated:
 
         #load requests to a particular btp prof
+        dict = BTPUserInfo.objects.filter(user=request.user)
 
-        requests = BTPRequest.objects.filter(btp__user=request.user, approval_status=0)
-        if requests:
-            p = 1
-        return render(request, 'main_app/btp_main_page.html', {'requests': requests, 'p' : p});
+        for dic in dict:
+            if dic.approval_status == 0:
+                return render(request, 'main_app/waiting_page.html')
+            else:
+                requests = BTPRequest.objects.filter(btp__user=request.user, approval_status=0)
+                if requests:
+                    p = 1
+                return render(request, 'main_app/btp_main_page.html', {'requests': requests, 'p' : p});
 
     return HttpResponseRedirect(reverse('mainPage'))
 
