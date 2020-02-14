@@ -59,7 +59,7 @@ def studentIndex(request):
     if request.POST:
         print(request.POST)
         student = StudentUserInfo.objects.get(user=request.user)
-        
+
 
 
 
@@ -189,7 +189,7 @@ def studentIndex(request):
                                                 date_sent=datetime.date.today(),
                                                 approval_status=0
                                                 )
-           
+
             else:
                  btp = BTPRequest.objects.create(  btp=BTPUserInfo.objects.get(user__username=varbtp),
                                                 student=StudentUserInfo.objects.get(user=request.user),
@@ -197,12 +197,12 @@ def studentIndex(request):
                                                 date_sent=datetime.date.today(),
                                                 approval_status=0
                                                 )
-           
+
 
           #  btp.save()
 
 
-        
+
         labs = LabUserInfo.objects.filter(department_id=student.department_id)
         #print(labs)
         for lab in labs :
@@ -285,8 +285,8 @@ def labIndex(request):
                     req.save()
                 # except:
                 # print("Nahi hua")
-        requests = LabRequests.objects.filter(lab__user=request.user, approval_status=0)
-        return render(request, 'main_app/lab_main_page.html', {'requests': requests, 'p' : p});
+        return HttpResponseRedirect(reverse('mainPage'))
+
 
 
     if request.user.is_authenticated:
@@ -303,7 +303,7 @@ def labIndex(request):
 def btpIndex(request):
 
     p = 0
-   
+
 
     if request.POST:
         print(request.POST);
@@ -336,8 +336,7 @@ def btpIndex(request):
                     req.save()
                 # except:
                 # print("Nahi hua")
-        requests = BTPRequest.objects.filter(btp__user=request.user, approval_status=0)
-        return render(request, 'main_app/btp_main_page.html', {'requests': requests, 'p' : p});
+        return HttpResponseRedirect(reverse('mainPage'))
 
 
     if request.user.is_authenticated:
@@ -385,8 +384,7 @@ def otherIndex(request):
                     req.remark = request.POST.getlist(stud)[1]
                     req.save()
 
-        requests = OtherRequest.objects.filter(other__user=request.user, approval_status=0)
-        return render(request, 'main_app/other_main_page.html', {'requests': requests, 'p' : p });
+        return HttpResponseRedirect(reverse('mainPage'));
 
 
     if request.user.is_authenticated:
@@ -403,7 +401,7 @@ def otherIndex(request):
 
 def hodIndex(request):
 
-   
+
     if request.POST:
         print(request.POST)
 
@@ -412,7 +410,7 @@ def hodIndex(request):
         if 'AcceptLAB' in request.POST:
             for req in LabRequests.objects.filter(lab__department=dicts.department, approval_status=1):
                 # try:
-              
+
                 stud = str(req.student.rollnumber)+str(req.lab.user.username)
                 print(stud)
                 print(request.POST.getlist(stud))
@@ -428,7 +426,7 @@ def hodIndex(request):
         elif 'RejectLAB' in request.POST:
             for req in LabRequests.objects.filter(lab__department=dicts.department, approval_status=1):
                 # try:
-               
+
                 stud = str(req.student.rollnumber)+str(req.lab.user.username)
                 print(stud)
                 print(request.POST.getlist(stud)[0])
@@ -443,7 +441,7 @@ def hodIndex(request):
         if 'AcceptBTP' in request.POST:
             for req in BTPRequest.objects.filter(btp__department=dicts.department, approval_status=1):
                 # try:
-              
+
                 stud = str(req.student.rollnumber)+str(req.btp.user.username)
                 print(stud)
                 print(request.POST.getlist(stud))
@@ -461,7 +459,7 @@ def hodIndex(request):
         elif 'RejectBTP' in request.POST:
             for req in BTPRequest.objects.filter(btp__department=dicts.department, approval_status=1):
                 # try:
-              
+
                 stud = str(req.student.rollnumber)+str(req.btp.user.username)
                 print(stud)
                 print(request.POST.getlist(stud)[0])
@@ -473,12 +471,7 @@ def hodIndex(request):
                 else:
                     print("Nahi hua")
 
-     #   return HttpResponseRedirect(reverse('mainPage'))
-
-
-
-
-
+        return HttpResponseRedirect(reverse('mainPage'))
 
 
 
