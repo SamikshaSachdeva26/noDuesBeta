@@ -22,6 +22,8 @@ class HODUserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
 
+    isBTP = models.BooleanField(default=False)
+
     def __str__(self):
         return self.user.username + "--" + str(self.department.name)
 
@@ -60,7 +62,8 @@ class LabRequests(models.Model):
         return str(self.student.rollnumber)+"--"+self.lab.user.username
 
 class BTPRequest(models.Model):
-    btp = models.ForeignKey(BTPUserInfo, on_delete=models.CASCADE)
+    btp = models.ForeignKey(BTPUserInfo, on_delete=models.CASCADE, null=True)
+    hod = models.ForeignKey(HODUserInfo, on_delete=models.CASCADE, null=True)
     student = models.ForeignKey(StudentUserInfo, on_delete=models.CASCADE)
 
     remark = models.CharField(max_length=300,null=True);
@@ -71,7 +74,10 @@ class BTPRequest(models.Model):
     approval_status = models.IntegerField()
 
     def __str__(self):
-        return str(self.student.rollnumber)+"--"+self.btp.user.username
+        if self.btp:
+            return str(self.student.rollnumber)+"--"+self.btp.user.username
+        else:
+            return str(self.student.rollnumber)+"--"+self.hod.user.username
 
 class OtherRequest(models.Model):
     other = models.ForeignKey(OtherUserInfo, on_delete=models.CASCADE)

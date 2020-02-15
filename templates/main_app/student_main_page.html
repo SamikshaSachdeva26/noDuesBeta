@@ -57,8 +57,11 @@
   {% for req in btpRequests %}
 
   <tr>
-
+    {% if req.btp %}
     <td>{{ req.btp.user.username }}</td>
+    {% else %}
+    <td>{{ req.hod.user.username }}</td>
+    {% endif %}
 
     {% if req.approval_status == 0 %}
     <td>WAITING</td>

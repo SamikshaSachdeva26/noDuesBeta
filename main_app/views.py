@@ -181,22 +181,46 @@ def studentIndex(request):
             except:
                 btpt = None
 
+            try:
+                btpOrHod = BTPUserInfo.objects.get(user__username = varbtp)
+                approval_status = 0
+            except:
+                btpOrHod = HODUserInfo.objects.get(user__username = varbtp)
+                approval_status = 1
+
+
             if btpt:
                 btpt.delete()
-                btp = BTPRequest.objects.create(  btp=BTPUserInfo.objects.get(user__username=varbtp),
-                                                student=StudentUserInfo.objects.get(user=request.user),
-                                                remark="",
-                                                date_sent=datetime.date.today(),
-                                                approval_status=0
-                                                )
+                if approval_status == 0:
+                    btp = BTPRequest.objects.create(  btp=btpOrHod,
+                                                    student=StudentUserInfo.objects.get(user=request.user),
+                                                    remark="",
+                                                    date_sent=datetime.date.today(),
+                                                    approval_status=approval_status
+                                                    )
+                else:
+                    btp = BTPRequest.objects.create(  hod=btpOrHod,
+                                                    student=StudentUserInfo.objects.get(user=request.user),
+                                                    remark="",
+                                                    date_sent=datetime.date.today(),
+                                                    approval_status=approval_status
+                                                    )
 
             else:
-                 btp = BTPRequest.objects.create(  btp=BTPUserInfo.objects.get(user__username=varbtp),
-                                                student=StudentUserInfo.objects.get(user=request.user),
-                                                remark="",
-                                                date_sent=datetime.date.today(),
-                                                approval_status=0
-                                                )
+                 if approval_status == 0:
+                     btp = BTPRequest.objects.create(  btp=btpOrHod,
+                                                     student=StudentUserInfo.objects.get(user=request.user),
+                                                     remark="",
+                                                     date_sent=datetime.date.today(),
+                                                     approval_status=approval_status
+                                                     )
+                 else:
+                     btp = BTPRequest.objects.create(  hod=btpOrHod,
+                                                     student=StudentUserInfo.objects.get(user=request.user),
+                                                     remark="",
+                                                     date_sent=datetime.date.today(),
+                                                     approval_status=approval_status
+                                                     )
 
 
           #  btp.save()
@@ -455,7 +479,7 @@ def hodIndex(request):
                 # try:
 
                 stud = str(req.student.rollnumber)+str(req.btp.user.username)
-                print(stud)
+                print(stud+"1")
                 print(request.POST.getlist(stud))
                 if request.POST.getlist(stud)[0] == 'YES':
                     # req.update(approval_status=1, remark=request.POST.getlist(stud))
@@ -466,6 +490,20 @@ def hodIndex(request):
                 else:
                     print("Nahi hua")
 
+            for req in BTPRequest.objects.filter(hod__user=request.user, approval_status=1):
+                # try:
+
+                stud = str(req.student.rollnumber)+str(req.hod.user.username)
+                print(stud)
+                print(request.POST.getlist(stud))
+                if request.POST.getlist(stud)[0] == 'YES':
+                    # req.update(approval_status=1, remark=request.POST.getlist(stud))
+                    print("YESSS")
+                    req.approval_status = 2
+                    req.remark = request.POST.getlist(stud)[1]
+                    req.save()
+                else:
+                    print("Nahi hua")
 
 
         elif 'RejectBTP' in request.POST:
@@ -483,19 +521,25 @@ def hodIndex(request):
                 else:
                     print("Nahi hua")
 
+
+            for req in BTPRequest.objects.filter(hod__user=request.user, approval_status=1):
+                # try:
+
+                stud = str(req.student.rollnumber)+str(req.hod.user.username)
+                print(stud)
+                print(request.POST.getlist(stud)[0])
+                if request.POST.getlist(stud)[0] == 'YES':
+                    # req.update(approval_status=1, remark=request.POST.getlist(stud))
+                    req.approval_status = 3
+                    req.remark = request.POST.getlist(stud)[1]
+                    req.save()
+                else:
+                    print("Nahi hua")
+
         return HttpResponseRedirect(reverse('mainPage'))
 
 
-
-
-
-
-
-
    # print(p,q);
-
-
-
 
 
     if request.user.is_authenticated:
@@ -507,6 +551,9 @@ def hodIndex(request):
             department = dict.department
             requests = LabRequests.objects.filter(lab__department=department, approval_status=1)
             requests2=BTPRequest.objects.filter(btp__department=department, approval_status=1)
+            requests3=BTPRequest.objects.filter(hod__user=request.user, approval_status=1)
+            requests2 = requests2.union(requests3)
+            print(requests2)
             return render(request, 'main_app/hod_main_page.html', {'requests': requests, 'requests2':requests2 });
 
 
@@ -874,7 +921,9 @@ def apply_page(request):
 
     try:
         btps = BTPUserInfo.objects.filter(approval_status=1)
-    except BTPUserInfo.DoesNotExist:
+        btps2 = HODUserInfo.objects.filter(isBTP=True)
+        btps = btps.union(btps2)
+    except BTPUserInfo.DoesNotExist or HODUserInfo.DoesNotExist:
         btps = None
 
     try:
@@ -984,7 +1033,7 @@ def apply_page(request):
 
 def hod_btp_approval_page(request):
 
-    
+
     if request.POST:
         print(request.POST)
 
@@ -1017,7 +1066,7 @@ def hod_btp_approval_page(request):
                 if request.POST.get(stud) == 'YES':
                     # req.update(approval_status=1, remark=request.POST.getlist(stud))
                     print("YESSSDELETED")
-                    req.approval_status = 1
+                    req.user.delete()
                     req.delete()
                 else:
                     print("Nahi hua")
@@ -1085,7 +1134,7 @@ def hod_lab_approval_page(request):
                 if request.POST.get(stud) == 'YES':
                     # req.update(approval_status=1, remark=request.POST.getlist(stud))
                     print("YESSSDELETED")
-                    req.approval_status = 1
+                    req.user.delete()
                     req.delete()
                 else:
                     print("Nahi hua")
@@ -1108,7 +1157,3 @@ def hod_lab_approval_page(request):
 
 
     return HttpResponseRedirect(reverse('labAccountRequests'))
-
-
-
-

@@ -20,7 +20,7 @@
           <li><a class="navbar-link" href="{% url 'labAccountRequests' %}">Lab Account Requests</a></li>
           <li><a class="navbar-link" href="{% url 'btpAccountRequests' %}">BTP Account Requests</a></li>
 
-          <li class="navbar-text" style="color:black">Lab Page</li>
+          <li class="navbar-text" style="color:black">HOD Page</li>
 
         </ul>
       </div>
@@ -127,10 +127,18 @@
             {% for req in requests2 %}
 
             <tr>
+              {% if req.btp %}
               <td><input class="form-check-input 1" type="checkbox" value="YES" id="{{ req.student.rollnumber }}{{ req.btp.user.username }}" name="{{ req.student.rollnumber }}{{ req.btp.user.username }}" onClick="toggle4(this)"></td>
+              {% else %}
+              <td><input class="form-check-input 1" type="checkbox" value="YES" id="{{ req.student.rollnumber }}{{ req.hod.user.username }}" name="{{ req.student.rollnumber }}{{ req.hod.user.username }}" onClick="toggle4(this)"></td>              
+              {% endif %}
               <td>{{ req.student.rollnumber }}</td>
               <td>{{ req.student.user.username }}</td>
+              {% if req.btp %}
               <td>{{ req.btp.user.username }}</td>
+              {% else %}
+              <td>{{ req.hod.user.username }}</td>
+              {% endif %}
               <td>{{ req.date_sent }}</td>
               {% if req.approval_status == 0 %}
               <td>WAITING</td>
@@ -141,7 +149,11 @@
               {% else %}
               <td>Rejected</td>
               {% endif %}
+              {% if req.btp %}
               <td><input class="form-check-input" type="text" placeholder="Remark..." id="{{ req.student.rollnumber }}{{ req.btp.user.username }}" name="{{ req.student.rollnumber }}{{ req.btp.user.username }}" ></td>
+              {% else %}
+              <td><input class="form-check-input" type="text" placeholder="Remark..." id="{{ req.student.rollnumber }}{{ req.hod.user.username }}" name="{{ req.student.rollnumber }}{{ req.hod.user.username }}" ></td>
+              {% endif %}
             </tr>
 
             {% endfor %}
