@@ -48,7 +48,7 @@
 
             <table style="width:100%", id="myTable">
             <tr>
-              <th>Selected</th>
+              <th><input id="selectAll2" value="YES" type="checkbox" onClick="toggle(this)"></th>
               <th>Roll Number</th>
               <th>Student</th>
               <th>Sent To</th>
@@ -61,7 +61,7 @@
             {% for req in requests %}
 
             <tr>
-              <td><input class="form-check-input" type="checkbox" value="YES" id="{{ req.student.rollnumber }}" name="{{ req.student.rollnumber }}{{ req.lab.user.username }}" ></td>
+              <td><input class="form-check-input 2" type="checkbox" value="YES" id="{{ req.student.rollnumber }}" name="{{ req.student.rollnumber }}{{ req.lab.user.username }}" onClick="toggle2(this)"></td>
               <td>{{ req.student.rollnumber }}</td>
               <td>{{ req.student.user.username }}</td>
               <td>{{ req.lab.user.username }}</td>
@@ -112,7 +112,7 @@
 
             <table style="width:100%", id="myTable1">
             <tr>
-              <th>Selected</th>
+              <th><input id="selectAll1" value="YES" type="checkbox" onClick="toggle3(this)"></th>
               <th>Roll Number</th>
               <th>Student</th>
               <th>Sent To</th>
@@ -127,7 +127,7 @@
             {% for req in requests2 %}
 
             <tr>
-              <td><input class="form-check-input" type="checkbox" value="YES" id="{{ req.student.rollnumber }}{{ req.btp.user.username }}" name="{{ req.student.rollnumber }}{{ req.btp.user.username }}" ></td>
+              <td><input class="form-check-input 1" type="checkbox" value="YES" id="{{ req.student.rollnumber }}{{ req.btp.user.username }}" name="{{ req.student.rollnumber }}{{ req.btp.user.username }}" onClick="toggle4(this)"></td>
               <td>{{ req.student.rollnumber }}</td>
               <td>{{ req.student.user.username }}</td>
               <td>{{ req.btp.user.username }}</td>
@@ -200,6 +200,33 @@
         }
       }
       }
+
+      function toggle(source) {
+        checkboxes = document.getElementsByClassName('2');
+        for(var i=0, n=checkboxes.length;i<n;i++) {
+          checkboxes[i].checked = source.checked;
+        }
+      }
+
+      function toggle2(source){
+
+        document.getElementById("selectAll2").checked=false;
+
+      }
+
+      function toggle3(source) {
+        checkboxes = document.getElementsByClassName('1');
+        for(var i=0, n=checkboxes.length;i<n;i++) {
+          checkboxes[i].checked = source.checked;
+        }
+      }
+
+      function toggle4(source){
+
+        document.getElementById("selectAll1").checked=false;
+
+      }
+
 </script>
 
   </body>

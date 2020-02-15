@@ -48,14 +48,14 @@
 
             <table style="width:100%", id="myTable">
             <tr>
-              <th>Selected</th>
+              <th><input id="selectAll" value="YES" type="checkbox" onClick="toggle(this)"></th>
               <th>Professor</th>
             </tr>
 
             {% for req in requests %}
 
             <tr>
-              <td><input class="form-check-input" type="checkbox" value="YES" id="{{ req.user.username }}" name="{{ req.user.username }}" ></td>
+              <td><input class="form-check-input" type="checkbox" value="YES" id="{{ req.user.username }}" name="{{ req.user.username }}" onClick="toggle2(this)" ></td>
               <td>{{ req.user.username }}</td>
               <!-- <td>{{ req.student.user.username }}</td>
               <td>{{ req.lab.user.username }}</td>
@@ -194,6 +194,21 @@
       //   }
       // }
       // }
+
+      function toggle(source) {
+        checkboxes = document.getElementsByClassName('form-check-input');
+        for(var i=0, n=checkboxes.length;i<n;i++) {
+        checkboxes[i].checked = source.checked;
+        }
+      }
+
+      function toggle2(source){
+
+        document.getElementById("selectAll").checked=false;
+
+      }
+
+
 </script>
 
   </body>
