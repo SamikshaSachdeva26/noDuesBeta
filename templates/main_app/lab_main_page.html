@@ -23,6 +23,13 @@
 
     </nav>
 
+    <div class="container">
+      <div class="jumbotron">
+        <h2>{% include 'main_app/messages.html' %}</h2>
+      </div>
+
+    </div>
+
     <div class="container text-center">
       <h3>Hello {{request.user.username}}</h3>
     </div>
@@ -30,13 +37,13 @@
 
       <div class="container">
       <div class="jumbotron">
-            <form action="{% url 'labIndex' %}" method="POST" enctype="multipart/form-data" class="form-horizontal"> 
+            <form action="{% url 'labIndex' %}" method="POST" enctype="multipart/form-data" class="form-horizontal">
                             {% csrf_token %}
                             <h3>UPLOAD FILE HERE...</h3>
                     <div class="form-group">
                         <div class="col-md-8">
                             <input type="file" name="csv_file" id="csv_file" required="True" class="form-control">
-                        </div>                    
+                        </div>
                     </div>
                      <button type="submit" name="AcceptCSV" class="btn btn-primary"> Upload and Accept </button>
                      <button type="submit" name="RejectCSV" class="btn btn-danger"> Upload and Reject </button>
