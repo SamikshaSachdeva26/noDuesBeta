@@ -765,22 +765,6 @@ def change_password(request):
         'form': form
     })
 
-def change_password(request):
-
-    if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
-        if form.is_valid():
-            user = form.save()
-            messages.success(request, 'Your password was successfully updated!')
-            return HttpResponseRedirect(reverse('studentIndex'))
-        else:
-            messages.error(request, 'Please correct the error below.')
-    else:
-        form = PasswordChangeForm(request.user)
-    return render(request, 'main_app/change_password.html', {
-        'form': form
-    })
-
 def apply_page(request):
     student = StudentUserInfo.objects.get(user=request.user)
     try:
