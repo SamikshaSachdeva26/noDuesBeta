@@ -317,6 +317,7 @@ def labIndex(request):
                 print("jjfjfnotcsv")
                 messages.error(request,'File is not CSV type')
 
+
                 return HttpResponseRedirect(reverse("labIndex"))
             #if file is too large, return
             if csv_file.multiple_chunks():
@@ -329,22 +330,34 @@ def labIndex(request):
             #loop over the lines and save them in db. If error , store as string and then display
             print(len(lines))
             lines.pop()
+            c = 0
+            f = 0
             for line in lines:
                 print(line)
                 fields = line.split(",")
-                print(len(fields))
-                print(fields[0])
-                if 'AcceptCSV' in request.POST:
-                    for req in LabRequests.objects.filter(lab__user=request.user,student__rollnumber=fields[0],approval_status=0):
-                        print(line,"andarand")
-                        req.approval_status = 1
-                        req.remark = fields[1]
-                        req.save()
-                if 'RejectCSV' in request.POST:
-                    for req in LabRequests.objects.filter(lab__user=request.user,student__rollnumber=fields[0],approval_status=0):
-                        req.approval_status = 3
-                        req.remark = fields[1]
-                        req.save()
+                #print(len(fields))
+                if(len(fields) >= 2):
+                    if(fields[0].isdigit()):
+                        c = c + 1
+                        if 'AcceptCSV' in request.POST:
+                            for req in LabRequests.objects.filter(lab__user=request.user,student__rollnumber=fields[0],approval_status=0):
+                                print(line,"andarand")
+                                req.approval_status = 1
+                                req.remark = "Approved - "+fields[1]
+                                req.save()
+                        if 'RejectCSV' in request.POST:
+                            for req in LabRequests.objects.filter(lab__user=request.user,student__rollnumber=fields[0],approval_status=0):
+                                req.approval_status = 3
+                                req.remark = "Rejected - "+fields[1]
+                                req.save()
+                else:
+                    messages.error(request,'Incorrect File Format!\nEvery Row should have atleast two entries,\nFirst entry being rollnumber and the second being the remark')
+                    f = 1
+                    break
+            if c == 0 and f == 0:
+                messages.error(request,'Incorrect File Format!\nEvery Row should have atleast two entries,\nFirst entry being rollnumber and the second being the remark')
+
+
 
 
         return HttpResponseRedirect(reverse('mainPage'))
@@ -426,22 +439,33 @@ def btpIndex(request):
             #loop over the lines and save them in db. If error , store as string and then display
             print(len(lines))
             lines.pop()
+            c = 0
+            f = 0
             for line in lines:
                 print(line)
                 fields = line.split(",")
                 print(len(fields))
-                print(fields[1])
-                if 'AcceptCSV' in request.POST:
-                    for req in BTPRequest.objects.filter(btp__user=request.user,student__rollnumber=fields[1],approval_status=0):
-                        print(line,"andarand")
-                        req.approval_status = 1
-                        req.remark = fields[0]
-                        req.save()
-                if 'RejectCSV' in request.POST:
-                    for req in BTPRequest.objects.filter(btp__user=request.user,student__rollnumber=fields[1],approval_status=0):
-                        req.approval_status = 3
-                        req.remark = fields[0]
-                        req.save()
+                #print(fields[1])
+                if(len(fields) >= 2):
+                    if(fields[0].isdigit()):
+                        c = c + 1
+                        if 'AcceptCSV' in request.POST:
+                            for req in BTPRequest.objects.filter(btp__user=request.user,student__rollnumber=fields[0],approval_status=0):
+                                print(line,"andarand")
+                                req.approval_status = 1
+                                req.remark = fields[1]
+                                req.save()
+                        if 'RejectCSV' in request.POST:
+                            for req in BTPRequest.objects.filter(btp__user=request.user,student__rollnumber=fields[0],approval_status=0):
+                                req.approval_status = 3
+                                req.remark = fields[1]
+                                req.save()
+                else:
+                    messages.error(request,'Incorrect File Format!\nEvery Row should have atleast two entries,\nFirst entry being rollnumber and the second being the remark')
+                    f = 1
+                    break
+            if c == 0 and f == 0:
+                messages.error(request,'Incorrect File Format!\nEvery Row should have atleast two entries,\nFirst entry being rollnumber, second being  the remark')
 
 
         return HttpResponseRedirect(reverse('mainPage'))
@@ -518,26 +542,37 @@ def otherIndex(request):
             #loop over the lines and save them in db. If error , store as string and then display
             print(len(lines))
             lines.pop()
+            c = 0
+            f = 0
             for line in lines:
                 print(line)
                 fields = line.split(",")
-                print(len(fields))
-                print(fields[1])
-                if 'AcceptCSV' in request.POST:
-                    for req in OtherRequest.objects.filter(other__user=request.user,student__rollnumber=fields[1],approval_status=0):
-                        print(line,"andarand")
-                        req.approval_status = 2
-                        req.remark = fields[0]
-                        req.save()
-                if 'RejectCSV' in request.POST:
-                    for req in OtherRequest.objects.filter(other__user=request.user,student__rollnumber=fields[1],approval_status=0):
-                        req.approval_status = 3
-                        req.remark = fields[0]
-                        req.save()
+                # print(len(fields))
+                # print(fields[1])
+                if(len(fields) >= 2):
+                    if(fields[0].isdigit()):
+                        c = c + 1
+                        if 'AcceptCSV' in request.POST:
+                            for req in OtherRequest.objects.filter(other__user=request.user,student__rollnumber=fields[0],approval_status=0):
+                                print(line,"andarand")
+                                req.approval_status = 2
+                                req.remark = fields[1]
+                                req.save()
+                        if 'RejectCSV' in request.POST:
+                            for req in OtherRequest.objects.filter(other__user=request.user,student__rollnumber=fields[0],approval_status=0):
+                                req.approval_status = 3
+                                req.remark = fields[1]
+                                req.save()
+                else:
+                    messages.error(request,'Incorrect File Format!\nEvery Row should have atleast two entries,\nFirst entry being rollnumber and the second being the remark')
+                    f = 1
+                    break
+            if c == 0 and f == 0:
+                messages.error(request,'Incorrect File Format!\nEvery Row should have atleast two entries,\nFirst entry being rollnumber and the second being the remark')
+
 
 
         return HttpResponseRedirect(reverse('mainPage'))
-
 
 
     if request.user.is_authenticated:
@@ -675,35 +710,65 @@ def hodIndex(request):
             #loop over the lines and save them in db. If error , store as string and then display
             print(len(lines))
             lines.pop()
+            c = 0
+            f = 0
             for line in lines:
                 print(line)
                 fields = line.split(",")
                 print(len(fields))
-                print(fields[1])
-                if 'AcceptCSVLAB' in request.POST:
-                    for req in LabRequests.objects.filter(lab__department=dicts.department,student__rollnumber=fields[1],lab__user__username=fields[0] , approval_status=1):
-                        print(line,"andarand")
-                        req.approval_status = 2
-                        req.remark = fields[0]+" Approved"
-                        req.save()
-                if 'RejectCSVLAB' in request.POST:
-                    for req in LabRequests.objects.filter(lab__department=dicts.department,student__rollnumber=fields[1],lab__user__username=fields[0] , approval_status=1):
-                        print(line,"andarand")
-                        req.approval_status = 3
-                        req.remark = fields[0]+" Rejected"
-                        req.save()
-                if 'AcceptCSVBTP' in request.POST:
-                    for req in BTPRequest.objects.filter(btp__department=dicts.department,student__rollnumber=fields[1],btp__user__username=fields[0] , approval_status=1):
-                        print(line,"andarand")
-                        req.approval_status = 2
-                        req.remark = fields[0]+" Approved"
-                        req.save()
-                if 'RejectCSVBTP' in request.POST:
-                    for req in BTPRequest.objects.filter(btp__department=dicts.department,student__rollnumber=fields[1],btp__user__username=fields[0] , approval_status=1):
-                        print(line,"andarand")
-                        req.approval_status = 3
-                        req.remark = fields[0]+" Rejected"
-                        req.save()
+                #print(fields[1])
+
+
+                if(len(fields) >= 3):
+                    if(fields[0].isdigit()):
+                        c = c + 1
+                        if 'AcceptCSVLAB' in request.POST:
+                            for req in LabRequests.objects.filter(lab__department=dicts.department,student__rollnumber=fields[0],lab__user__username=fields[1] , approval_status=1):
+                                print(line,"andarand")
+                                req.approval_status = 2
+                                req.remark = fields[2]
+                                req.save()
+                        if 'RejectCSVLAB' in request.POST:
+                            for req in LabRequests.objects.filter(lab__department=dicts.department,student__rollnumber=fields[0],lab__user__username=fields[1] , approval_status=1):
+                                print(line,"andarand")
+                                req.approval_status = 3
+                                req.remark = fields[2]
+                                req.save()
+                        if 'AcceptCSVBTP' in request.POST:
+                            for req in BTPRequest.objects.filter(btp__department=dicts.department,student__rollnumber=fields[0],btp__user__username=fields[1] , approval_status=1):
+                                print(line,"andarand")
+                                req.approval_status = 2
+                                req.remark = fields[2]
+                                req.save()
+                            for req in BTPRequest.objects.filter(student__rollnumber=fields[0],hod__user=request.user , approval_status=1):
+                                print(line,"andarandbtp")
+                                req.approval_status = 2
+                                req.remark = fields[2]
+                                req.save()
+
+                        if 'RejectCSVBTP' in request.POST:
+                            print("RejectCSVBTP",fields[1])
+                            #print(fields[1])
+                            for req in BTPRequest.objects.filter(btp__department=dicts.department,student__rollnumber=fields[0],btp__user__username=fields[1] , approval_status=1):
+                                print(line,"andarand")
+                                req.approval_status = 3
+                                req.remark = fields[2]
+                                req.save()
+                            for req in BTPRequest.objects.filter(student__rollnumber=fields[0],hod__user=request.user , approval_status=1):
+                                print(line,"andarandbtp")
+                                req.approval_status = 3
+                                req.remark = fields[2]
+                                req.save()
+
+                else:
+                    messages.error(request,'Incorrect File Format!\nEvery Row should have atleast three entries,\nFirst entry being rollnumber, second being  lab/btp and the third being the remark')
+                    f = 1
+                    print("hii")
+                    break
+            if c == 0 and f == 0:
+                print("c==0")
+                messages.error(request,'Incorrect File Format!\nEvery Row should have atleast three entries,\nFirst entry being rollnumber, second being  lab/btp and the third being the remark')
+
 
 
         return HttpResponseRedirect(reverse('mainPage'))
