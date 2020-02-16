@@ -3,7 +3,8 @@
 
 {% block body_block %}
 
-<div class="jumbotron">
+{% if btpRequests.count > 0 %}
+<div style="background-color:#DAAD86" class="jumbotron">
 
   <h3>BTP Requests</h3>
 
@@ -17,7 +18,6 @@
   {% for req in btpRequests %}
 
   <tr>
-
     {% if req.btp %}
     <td>{{ req.btp.user.username }}</td>
     {% else %}
@@ -42,5 +42,10 @@
 </table>
 
 </div>
+{% else %}
+<br>
+<h3>No BTP Requests...</h3>
+<br><br>
+{% endif %}
 
 {% endblock %}

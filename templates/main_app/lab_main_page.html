@@ -12,18 +12,19 @@
 
 
 
-    <nav class="navbar navbar-default navbar-static-top">
+    <nav style="background-color:#05386B;" class="navbar navbar-default navbar-fixed-top">
 
-      <div class="container">
+      <div style="background-color:#05386B;" class="container">
         <ul class="nav navbar-nav">
 
-          <li><a class="navbar-link" href="{% url 'logout' %}">Log Out</a></li>
-          <li class="navbar-text" style="color:black">Lab Page</li>
+          <li><a style="color:white" class="navbar-link" href="{% url 'logout' %}">Log Out</a></li>
 
         </ul>
       </div>
 
     </nav>
+
+    <br><br><br><br>
 
     {% if messages %}
     <div style="height:105px" class="container">
@@ -106,6 +107,8 @@
         {% endfor %}
 
       </table>
+
+      <br>
 
       <button type="submit" name="Accept" class="btn btn-primary">Accept</button>
       <button type="submit" name="Reject" class="btn btn-danger">Reject</button>
