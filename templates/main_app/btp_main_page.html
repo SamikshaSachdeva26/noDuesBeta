@@ -1,26 +1,28 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
     <title></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
 
   </head>
   <body>
 
-    <nav class="navbar navbar-default navbar-static-top">
+    <nav style="background-color:#05386B;" class="navbar navbar-default navbar-fixed-top">
 
       <div class="container">
         <ul class="nav navbar-nav">
 
-          <li><a class="navbar-link" href="{% url 'logout' %}">Log Out</a></li>
-          <li class="navbar-text" style="color:black">BTP Page</li>
+          <li><a style="color:white" class="navbar-link" href="{% url 'logout' %}">Log Out</a></li>
 
         </ul>
       </div>
 
     </nav>
 
+    <br><br><br><br>
 
     {% if messages %}
     <div style="height:105px" class="container">
@@ -38,7 +40,7 @@
 
 
     <div class="container">
-      <div class="jumbotron">
+      <div style="background-color:#DAAD86" class="jumbotron">
             <form action="{% url 'btpIndex' %}" method="POST" enctype="multipart/form-data" class="form-horizontal">
                             {% csrf_token %}
                             UPLOAD FILE HERE...
@@ -59,7 +61,7 @@
     {% if p %}
 
     <div class="container">
-      <div class="jumbotron">
+      <div style="background-color:#DAAD86" class="jumbotron">
         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for roll no" title="Type in roll number">
         <br><br>
 
@@ -98,6 +100,8 @@
         {% endfor %}
 
       </table>
+
+      <br>
 
       <button type="submit" name="Accept" class="btn btn-primary">Accept</button>
       <button type="submit" name="Reject" class="btn btn-danger">Reject</button>

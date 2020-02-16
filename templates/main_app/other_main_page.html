@@ -46,7 +46,7 @@
 
 
     <div class="container">
-      <div class="jumbotron">
+      <div style="background-color:#DAAD86" class="jumbotron">
             <form action="{% url 'otherIndex' %}" method="POST" enctype="multipart/form-data" class="form-horizontal">
                             {% csrf_token %}
                             UPLOAD FILE HERE...
@@ -79,7 +79,7 @@
 
     {% if p %}
     <div class="container">
-      <div class="jumbotron">
+      <div style="background-color:#DAAD86" class="jumbotron">
 
         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for roll no" title="Type in roll number">
       	<br><br>

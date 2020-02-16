@@ -663,11 +663,11 @@ def hodIndex(request):
             if not csv_file.name.endswith('.csv'):
                 print("jjfjfnotcsv")
                 messages.error(request,'File is not CSV type')
-                return HttpResponseRedirect(reverse("otherIndex"))
+                return HttpResponseRedirect(reverse("hodIndex"))
             #if file is too large, return
             if csv_file.multiple_chunks():
                 messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(1000*1000),))
-                return HttpResponseRedirect(reverse("otherIndex"))
+                return HttpResponseRedirect(reverse("hodIndex"))
 
             file_data = csv_file.read().decode("utf-8")
 

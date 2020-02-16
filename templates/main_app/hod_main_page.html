@@ -1,26 +1,29 @@
 <!DOCTYPE html>
+{% load staticfiles %}
+
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
     <title></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
 
   </head>
   <body>
 
 
 
-    <nav class="navbar navbar-default navbar-static-top">
+    <nav style="background-color:#05386B;" class="navbar navbar-default navbar-static-top">
 
       <div class="container">
         <ul class="nav navbar-nav">
 
-          <li><a class="navbar-link" href="{% url 'logout' %}">Log Out</a></li>
-          <li><a class="navbar-link" href="{% url 'hodIndex' %}">Student Requests</a></li>
-          <li><a class="navbar-link" href="{% url 'labAccountRequests' %}">Lab Account Requests</a></li>
-          <li><a class="navbar-link" href="{% url 'btpAccountRequests' %}">BTP Account Requests</a></li>
+          <li><a style="color:white" class="navbar-link" href="{% url 'logout' %}">Log Out</a></li>
+          <li><a style="color:white" class="navbar-link" href="{% url 'hodIndex' %}">Student Requests</a></li>
+          <li><a style="color:white" class="navbar-link" href="{% url 'labAccountRequests' %}">Lab Account Requests</a></li>
+          <li><a style="color:white" class="navbar-link" href="{% url 'btpAccountRequests' %}">BTP Account Requests</a></li>
 
-          <li class="navbar-text" style="color:black">HOD Page</li>
+
 
         </ul>
       </div>
@@ -154,6 +157,8 @@
 
             </table>
 
+            <br>
+
             <button type="submit" name="AcceptLAB" class="btn btn-primary">Accept</button>
             <button type="submit" name="RejectLAB" class="btn btn-danger">Reject</button>
 
@@ -228,6 +233,8 @@
             {% endfor %}
 
             </table>
+
+            <br>
 
             <button type="submit" name="AcceptBTP" class="btn btn-primary">Accept</button>
             <button type="submit" name="RejectBTP" class="btn btn-danger">Reject</button>
