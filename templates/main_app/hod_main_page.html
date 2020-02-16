@@ -32,6 +32,65 @@
     </div>
 
 
+    
+    <div class="container">
+      <div class="jumbotron">
+            <form action="{% url 'hodIndex' %}" method="POST" enctype="multipart/form-data" class="form-horizontal"> 
+                            {% csrf_token %}
+                            UPLOAD FILE FOR LAB DUES HERE...
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <input type="file" name="csv_file" id="csv_file" required="True" class="form-control">
+                        </div>                    
+                    </div>
+                     <button type="submit" name="AcceptCSVLAB" class="btn btn-primary"> Upload and Accept </button>
+                     <button type="submit" name="RejectCSVLAB" class="btn btn-danger"> Upload and Reject </button>
+            </form>
+      </div>
+    </div>
+
+
+    <div class="container">
+      <div class="jumbotron">
+            <form action="{% url 'hodIndex' %}" method="POST" enctype="multipart/form-data" class="form-horizontal"> 
+                            {% csrf_token %}
+                            UPLOAD FILE FOR BTP DUES HERE...
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <input type="file" name="csv_file" id="csv_file" required="True" class="form-control">
+                        </div>                    
+                    </div>
+                     <button type="submit" name="AcceptCSVBTP" class="btn btn-primary"> Upload and Accept </button>
+                     <button type="submit" name="RejectCSVBTP" class="btn btn-danger"> Upload and Reject </button>
+            </form>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <div class="container">
       <div class="jumbotron">
         <p>{% if requests.count > 0 %}</p>

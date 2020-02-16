@@ -309,7 +309,46 @@ def labIndex(request):
                     req.save()
                 # except:
                 # print("Nahi hua")
+        else:
+            print(request.POST)
+            print("jjfjf")
+            csv_file = request.FILES["csv_file"]
+            if not csv_file.name.endswith('.csv'):
+                print("jjfjfnotcsv")
+                messages.error(request,'File is not CSV type')
+                return HttpResponseRedirect(reverse("labIndex"))
+            #if file is too large, return
+            if csv_file.multiple_chunks():
+                messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(1000*1000),))
+                return HttpResponseRedirect(reverse("labIndex"))
+
+            file_data = csv_file.read().decode("utf-8")     
+
+            lines = file_data.split("\n")
+            #loop over the lines and save them in db. If error , store as string and then display
+            print(len(lines))
+            lines.pop()
+            for line in lines:
+                print(line)                    
+                fields = line.split(",")
+                print(len(fields))
+                print(fields[1])
+                if 'AcceptCSV' in request.POST:
+                    for req in LabRequests.objects.filter(lab__user=request.user,student__rollnumber=fields[1],approval_status=0):
+                        print(line,"andarand")   
+                        req.approval_status = 1
+                        req.remark = fields[0]
+                        req.save()
+                if 'RejectCSV' in request.POST:
+                    for req in LabRequests.objects.filter(lab__user=request.user,student__rollnumber=fields[1],approval_status=0):
+                        req.approval_status = 3
+                        req.remark = fields[0]
+                        req.save()
+
+
         return HttpResponseRedirect(reverse('mainPage'))
+
+  
 
 
 
@@ -329,6 +368,7 @@ def labIndex(request):
 
 
     return HttpResponseRedirect(reverse('mainPage'))
+
 
 def btpIndex(request):
 
@@ -366,7 +406,46 @@ def btpIndex(request):
                     req.save()
                 # except:
                 # print("Nahi hua")
+        else:
+            print(request.POST)
+            print("jjfjf")
+            csv_file = request.FILES["csv_file"]
+            if not csv_file.name.endswith('.csv'):
+                print("jjfjfnotcsv")
+                messages.error(request,'File is not CSV type')
+                return HttpResponseRedirect(reverse("btpIndex"))
+            #if file is too large, return
+            if csv_file.multiple_chunks():
+                messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(1000*1000),))
+                return HttpResponseRedirect(reverse("btpIndex"))
+
+            file_data = csv_file.read().decode("utf-8")     
+
+            lines = file_data.split("\n")
+            #loop over the lines and save them in db. If error , store as string and then display
+            print(len(lines))
+            lines.pop()
+            for line in lines:
+                print(line)                    
+                fields = line.split(",")
+                print(len(fields))
+                print(fields[1])
+                if 'AcceptCSV' in request.POST:
+                    for req in BTPRequest.objects.filter(btp__user=request.user,student__rollnumber=fields[1],approval_status=0):
+                        print(line,"andarand")   
+                        req.approval_status = 1
+                        req.remark = fields[0]
+                        req.save()
+                if 'RejectCSV' in request.POST:
+                    for req in BTPRequest.objects.filter(btp__user=request.user,student__rollnumber=fields[1],approval_status=0):
+                        req.approval_status = 3
+                        req.remark = fields[0]
+                        req.save()
+
+
         return HttpResponseRedirect(reverse('mainPage'))
+
+  
 
 
     if request.user.is_authenticated:
@@ -419,8 +498,46 @@ def otherIndex(request):
                     req.remark = request.POST.getlist(stud)[1]
                     req.save()
 
-        return HttpResponseRedirect(reverse('mainPage'));
+        else:
+            print(request.POST)
+            print("jjfjf")
+            csv_file = request.FILES["csv_file"]
+            if not csv_file.name.endswith('.csv'):
+                print("jjfjfnotcsv")
+                messages.error(request,'File is not CSV type')
+                return HttpResponseRedirect(reverse("otherIndex"))
+            #if file is too large, return
+            if csv_file.multiple_chunks():
+                messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(1000*1000),))
+                return HttpResponseRedirect(reverse("otherIndex"))
 
+            file_data = csv_file.read().decode("utf-8")     
+
+            lines = file_data.split("\n")
+            #loop over the lines and save them in db. If error , store as string and then display
+            print(len(lines))
+            lines.pop()
+            for line in lines:
+                print(line)                    
+                fields = line.split(",")
+                print(len(fields))
+                print(fields[1])
+                if 'AcceptCSV' in request.POST:
+                    for req in OtherRequest.objects.filter(other__user=request.user,student__rollnumber=fields[1],approval_status=0):
+                        print(line,"andarand")   
+                        req.approval_status = 2
+                        req.remark = fields[0]
+                        req.save()
+                if 'RejectCSV' in request.POST:
+                    for req in OtherRequest.objects.filter(other__user=request.user,student__rollnumber=fields[1],approval_status=0):
+                        req.approval_status = 3
+                        req.remark = fields[0]
+                        req.save()
+
+
+        return HttpResponseRedirect(reverse('mainPage'))
+
+  
 
     if request.user.is_authenticated:
 
@@ -474,26 +591,11 @@ def hodIndex(request):
                 else:
                     print("Nahi hua")
 
-        if 'AcceptBTP' in request.POST:
+        elif 'AcceptBTP' in request.POST:
             for req in BTPRequest.objects.filter(btp__department=dicts.department, approval_status=1):
                 # try:
 
                 stud = str(req.student.rollnumber)+str(req.btp.user.username)
-                print(stud+"1")
-                print(request.POST.getlist(stud))
-                if request.POST.getlist(stud)[0] == 'YES':
-                    # req.update(approval_status=1, remark=request.POST.getlist(stud))
-                    print("YESSS")
-                    req.approval_status = 2
-                    req.remark = request.POST.getlist(stud)[1]
-                    req.save()
-                else:
-                    print("Nahi hua")
-
-            for req in BTPRequest.objects.filter(hod__user=request.user, approval_status=1):
-                # try:
-
-                stud = str(req.student.rollnumber)+str(req.hod.user.username)
                 print(stud)
                 print(request.POST.getlist(stud))
                 if request.POST.getlist(stud)[0] == 'YES':
@@ -504,6 +606,7 @@ def hodIndex(request):
                     req.save()
                 else:
                     print("Nahi hua")
+
 
 
         elif 'RejectBTP' in request.POST:
@@ -522,19 +625,55 @@ def hodIndex(request):
                     print("Nahi hua")
 
 
-            for req in BTPRequest.objects.filter(hod__user=request.user, approval_status=1):
-                # try:
+        else:
+            print(request.POST)
+            print("jjfjf")
+            csv_file = request.FILES["csv_file"]
+            if not csv_file.name.endswith('.csv'):
+                print("jjfjfnotcsv")
+                messages.error(request,'File is not CSV type')
+                return HttpResponseRedirect(reverse("otherIndex"))
+            #if file is too large, return
+            if csv_file.multiple_chunks():
+                messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(1000*1000),))
+                return HttpResponseRedirect(reverse("otherIndex"))
 
-                stud = str(req.student.rollnumber)+str(req.hod.user.username)
-                print(stud)
-                print(request.POST.getlist(stud)[0])
-                if request.POST.getlist(stud)[0] == 'YES':
-                    # req.update(approval_status=1, remark=request.POST.getlist(stud))
-                    req.approval_status = 3
-                    req.remark = request.POST.getlist(stud)[1]
-                    req.save()
-                else:
-                    print("Nahi hua")
+            file_data = csv_file.read().decode("utf-8")     
+
+            lines = file_data.split("\n")
+            #loop over the lines and save them in db. If error , store as string and then display
+            print(len(lines))
+            lines.pop()
+            for line in lines:
+                print(line)                    
+                fields = line.split(",")
+                print(len(fields))
+                print(fields[1])
+                if 'AcceptCSVLAB' in request.POST:
+                    for req in LabRequests.objects.filter(lab__department=dicts.department,student__rollnumber=fields[1],lab__user__username=fields[0] , approval_status=1):
+                        print(line,"andarand")   
+                        req.approval_status = 2
+                        req.remark = fields[0]+" Approved"
+                        req.save()
+                if 'RejectCSVLAB' in request.POST:
+                    for req in LabRequests.objects.filter(lab__department=dicts.department,student__rollnumber=fields[1],lab__user__username=fields[0] , approval_status=1):
+                        print(line,"andarand")   
+                        req.approval_status = 3
+                        req.remark = fields[0]+" Rejected"
+                        req.save()
+                if 'AcceptCSVBTP' in request.POST:
+                    for req in BTPRequest.objects.filter(btp__department=dicts.department,student__rollnumber=fields[1],btp__user__username=fields[0] , approval_status=1):
+                        print(line,"andarand")   
+                        req.approval_status = 2
+                        req.remark = fields[0]+" Approved"
+                        req.save()
+                if 'RejectCSVBTP' in request.POST:
+                    for req in BTPRequest.objects.filter(btp__department=dicts.department,student__rollnumber=fields[1],btp__user__username=fields[0] , approval_status=1):
+                        print(line,"andarand")   
+                        req.approval_status = 3
+                        req.remark = fields[0]+" Rejected"
+                        req.save()
+
 
         return HttpResponseRedirect(reverse('mainPage'))
 

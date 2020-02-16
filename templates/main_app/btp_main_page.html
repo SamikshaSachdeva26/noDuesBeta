@@ -25,6 +25,27 @@
       <h3>Hello {{request.user.username}}</h3>
     </div>
 
+
+    
+    <div class="container">
+      <div class="jumbotron">
+            <form action="{% url 'btpIndex' %}" method="POST" enctype="multipart/form-data" class="form-horizontal"> 
+                            {% csrf_token %}
+                            UPLOAD FILE HERE...
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <input type="file" name="csv_file" id="csv_file" required="True" class="form-control">
+                        </div>                    
+                    </div>
+                     <button type="submit" name="AcceptCSV" class="btn btn-primary"> Upload and Accept </button>
+                     <button type="submit" name="RejectCSV" class="btn btn-danger"> Upload and Reject </button>
+            </form>
+      </div>
+    </div>
+
+
+
+
     {% if p %}
 
     <div class="container">
