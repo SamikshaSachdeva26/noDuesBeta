@@ -24,22 +24,32 @@
 
     </nav>
 
+    {% if messages %}
+    <div style="height:105px" class="container">
+      <div style="background-color:#FC4445; height:105px;  padding: 5px;" class="jumbotron">
+        <h3 style="color:white">{% include 'main_app/messages.html' %}</h3>
+      </div>
+
+    </div>
+    {% endif %}
+
+
     <div class="container text-center">
       <h3>Hello {{request.user.username}}</h3>
     </div>
 
 
-    
+
 
     <div class="container">
       <div class="jumbotron">
-            <form action="{% url 'otherIndex' %}" method="POST" enctype="multipart/form-data" class="form-horizontal"> 
+            <form action="{% url 'otherIndex' %}" method="POST" enctype="multipart/form-data" class="form-horizontal">
                             {% csrf_token %}
                             UPLOAD FILE HERE...
                     <div class="form-group">
                         <div class="col-md-8">
                             <input type="file" name="csv_file" id="csv_file" required="True" class="form-control">
-                        </div>                    
+                        </div>
                     </div>
                      <button type="submit" name="AcceptCSV" class="btn btn-primary"> Upload and Accept </button>
                      <button type="submit" name="RejectCSV" class="btn btn-danger"> Upload and Reject </button>
@@ -62,7 +72,7 @@
 
 
 
-    
+
     {% if p %}
     <div class="container">
       <div class="jumbotron">

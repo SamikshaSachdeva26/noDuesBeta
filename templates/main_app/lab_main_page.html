@@ -1,9 +1,11 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
     <title></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
 
   </head>
   <body>
@@ -23,12 +25,14 @@
 
     </nav>
 
-    <div class="container">
-      <div class="jumbotron">
-        <h2>{% include 'main_app/messages.html' %}</h2>
+    {% if messages %}
+    <div style="height:105px" class="container">
+      <div style="background-color:#FC4445; height:105px;  padding: 5px;" class="jumbotron">
+        <h3 style="color:white">{% include 'main_app/messages.html' %}</h3>
       </div>
 
     </div>
+    {% endif %}
 
     <div class="container text-center">
       <h3>Hello {{request.user.username}}</h3>
@@ -36,7 +40,7 @@
 
 
       <div class="container">
-      <div class="jumbotron">
+      <div style="background-color:#DAAD86" class="jumbotron">
             <form action="{% url 'labIndex' %}" method="POST" enctype="multipart/form-data" class="form-horizontal">
                             {% csrf_token %}
                             <h3>UPLOAD FILE HERE...</h3>
@@ -62,7 +66,7 @@
 
     {% if p %}
     <div class="container">
-      <div class="jumbotron">
+      <div style="background-color:#DAAD86" class="jumbotron">
         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for roll no" title="Type in roll number">
       	<br><br>
 

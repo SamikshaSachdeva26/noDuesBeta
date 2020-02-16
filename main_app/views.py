@@ -317,7 +317,6 @@ def labIndex(request):
                 print("jjfjfnotcsv")
                 messages.error(request,'File is not CSV type')
 
-
                 return HttpResponseRedirect(reverse("labIndex"))
             #if file is too large, return
             if csv_file.multiple_chunks():

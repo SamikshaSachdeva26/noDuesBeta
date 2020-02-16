@@ -27,21 +27,31 @@
 
     </nav>
 
+    {% if messages %}
+    <div style="height:105px" class="container">
+      <div style="background-color:#FC4445; height:105px;  padding: 5px;" class="jumbotron">
+        <h3 style="color:white">{% include 'main_app/messages.html' %}</h3>
+      </div>
+
+    </div>
+    {% endif %}
+
+
     <div class="container text-center">
       <h3>Hello {{request.user.username}}</h3>
     </div>
 
 
-    
+
     <div class="container">
       <div class="jumbotron">
-            <form action="{% url 'hodIndex' %}" method="POST" enctype="multipart/form-data" class="form-horizontal"> 
+            <form action="{% url 'hodIndex' %}" method="POST" enctype="multipart/form-data" class="form-horizontal">
                             {% csrf_token %}
                             UPLOAD FILE FOR LAB DUES HERE...
                     <div class="form-group">
                         <div class="col-md-8">
                             <input type="file" name="csv_file" id="csv_file" required="True" class="form-control">
-                        </div>                    
+                        </div>
                     </div>
                      <button type="submit" name="AcceptCSVLAB" class="btn btn-primary"> Upload and Accept </button>
                      <button type="submit" name="RejectCSVLAB" class="btn btn-danger"> Upload and Reject </button>
@@ -52,13 +62,13 @@
 
     <div class="container">
       <div class="jumbotron">
-            <form action="{% url 'hodIndex' %}" method="POST" enctype="multipart/form-data" class="form-horizontal"> 
+            <form action="{% url 'hodIndex' %}" method="POST" enctype="multipart/form-data" class="form-horizontal">
                             {% csrf_token %}
                             UPLOAD FILE FOR BTP DUES HERE...
                     <div class="form-group">
                         <div class="col-md-8">
                             <input type="file" name="csv_file" id="csv_file" required="True" class="form-control">
-                        </div>                    
+                        </div>
                     </div>
                      <button type="submit" name="AcceptCSVBTP" class="btn btn-primary"> Upload and Accept </button>
                      <button type="submit" name="RejectCSVBTP" class="btn btn-danger"> Upload and Reject </button>
@@ -189,7 +199,7 @@
               {% if req.btp %}
               <td><input class="form-check-input 1" type="checkbox" value="YES" id="{{ req.student.rollnumber }}{{ req.btp.user.username }}" name="{{ req.student.rollnumber }}{{ req.btp.user.username }}" onClick="toggle4(this)"></td>
               {% else %}
-              <td><input class="form-check-input 1" type="checkbox" value="YES" id="{{ req.student.rollnumber }}{{ req.hod.user.username }}" name="{{ req.student.rollnumber }}{{ req.hod.user.username }}" onClick="toggle4(this)"></td>              
+              <td><input class="form-check-input 1" type="checkbox" value="YES" id="{{ req.student.rollnumber }}{{ req.hod.user.username }}" name="{{ req.student.rollnumber }}{{ req.hod.user.username }}" onClick="toggle4(this)"></td>
               {% endif %}
               <td>{{ req.student.rollnumber }}</td>
               <td>{{ req.student.user.username }}</td>
