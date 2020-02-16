@@ -17,12 +17,12 @@
 
       <div class="container">
         <ul class="nav navbar-nav">
-          <li><a style="color:white" class="navbar-brand" href="{% url 'studentIndex' %}">All Requests</a></li>
-          <li><a style="color:white" class="navbar-link" href="{% url 'main_app:studentLab' %}">Lab Requests</a></li>
-          <li><a style="color:white" class="navbar-link" href="{% url 'main_app:studentBTP' %}">BTP Requests</a></li>
-          <li><a style="color:white" class="navbar-link" href="{% url 'main_app:studentOther' %}">Other Requests</a></li>
-          <li><a style="color:white" class="navbar-link" href="{% url 'main_app:change_password' %}">Change Password</a></li>
-          <li><a style="color:white" class="navbar-link" href="{% url 'logout' %}">Log Out</a></li>
+          <li><a style="color:white" onMouseOver="this.style.color='green'" onMouseOut="this.style.color='white'" class="navbar-brand" href="{% url 'studentIndex' %}">All Requests</a></li>
+          <li><a style="color:white" onMouseOver="this.style.color='green'" onMouseOut="this.style.color='white'" class="navbar-link" href="{% url 'main_app:studentLab' %}">Lab Requests</a></li>
+          <li><a style="color:white" onMouseOver="this.style.color='green'" onMouseOut="this.style.color='white'" class="navbar-link" href="{% url 'main_app:studentBTP' %}">BTP Requests</a></li>
+          <li><a style="color:white" onMouseOver="this.style.color='green'" onMouseOut="this.style.color='white'" class="navbar-link" href="{% url 'main_app:studentOther' %}">Other Requests</a></li>
+          <li><a style="color:white" onMouseOver="this.style.color='green'" onMouseOut="this.style.color='white'" class="navbar-link" href="{% url 'main_app:change_password' %}">Change Password</a></li>
+          <li><a style="color:white" onMouseOver="this.style.color='green'" onMouseOut="this.style.color='white'" class="navbar-link" href="{% url 'logout' %}">Log Out</a></li>
 
         </ul>
       </div>
@@ -44,15 +44,20 @@
 
     {% else %}
 
+    <br><br><br>
+
+
       <div class="container">
         <div class="jumbotron">
 
-          <h1>Please Log In</h1>
+          <h1>Log In</h1>
 
           <form action={% url 'main_app:user_login' %} method="post">
             {% csrf_token %}
             <label for="username">Username</label>
             <input type="text" name="username" placeholder="Username">
+            <br>
+            <br>
             <label for="password">Password</label>
             <input type="password" name="password" placeholder="Password">
 
