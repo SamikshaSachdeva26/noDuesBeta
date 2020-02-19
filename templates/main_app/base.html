@@ -6,6 +6,33 @@
     <title></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'styles.css' %}">
+     <style type="text/css">
+      body{
+        background-image: url("static/background.jpeg");
+        background-size:cover;
+        
+        color:black;
+        background-repeat:no-repeat;
+        background-position:center;
+        background-attachment:fixed;
+      }
+      .jumbotron {
+        background: none
+      }
+      .jumbotron .jumbotron-content {
+          position: absolute;
+          right: 0;
+          top: 4;
+          padding: 0px 15px;
+          width: 25%;
+          height: 50%;
+          background-color: #000;
+          background-image: :url("static/back2.jpg");
+          background-size:cover;
+          background-color: rgba(0, 0, 0, 0.66);
+          border-radius: 5px;
+        }
+    </style>
 
     {% block js %}
     {% endblock %}
@@ -50,30 +77,41 @@
       <div class="container">
         <div class="jumbotron">
 
-          <h1>Log In</h1>
+          <div class="jumbotron-content">
+          
 
-          <form action={% url 'main_app:user_login' %} method="post">
+            <h1 style="color:white" >Please Log In</h1>
+
+            <form action={% url 'main_app:user_login' %} method="post">
             {% csrf_token %}
-            <label for="username">Username</label>
-            <input type="text" name="username" placeholder="Username">
-            <br>
-            <br>
-            <label for="password">Password</label>
-            <input type="password" name="password" placeholder="Password">
-
+            <div class="form-group">
+              <label for="username" style="color:white" required>Username</label>
+              <input type="text" name="username" class="form-control" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+              <label for="password" style="color:white">Password</label>
+              <input type="password" name="password" class="form-control" placeholder="Password" required>
+            </div>
             <input type="submit" name="" value="Login">
           </form>
-
-          <a href="{% url 'main_app:registerStudent' %}">Don't have an account? Register as Student!</a>
+       
+          <h4 style="color:white">------------------------------<i>or</i>------------------------------</h4>
+          <a href="{% url 'main_app:registerStudent' %}"><b>Don't have an account? Register as Student!</b></a>
+          
           <br>
-          <a href="{% url 'main_app:registerLab' %}">Don't have an account? Register as Lab!</a>
+          <a href="{% url 'main_app:registerLab' %}"><b>Don't have an account? Register as Lab!</b></a>
+          
           <br>
-          <a href="{% url 'main_app:registerBTP' %}">Don't have an account? Register as BTP!</a>
+          <a href="{% url 'main_app:registerBTP' %}"><b>Don't have an account? Register as BTP!</b></a>
+          
           <br>
-          <a href="{% url 'main_app:registerHOD' %}">Don't have an account? Register as HOD!</a>
+          <a href="{% url 'main_app:registerHOD' %}"><b>Don't have an account? Register as HOD!</b></a>
+         
           <br>
-          <a href="{% url 'main_app:registerOther' %}">Don't have an account? Register as Other!</a>
+          <a href="{% url 'main_app:registerOther' %}"><b>Don't have an account? Register as Other!</b></a>
+          
           <br>
+           </div>
 
         </div>
 

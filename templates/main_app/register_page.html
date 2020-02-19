@@ -1,20 +1,32 @@
+
 <!DOCTYPE html>
+{% load static %}
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
     <title></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <style type="text/css">
 
+      .jumbotron .jumbotron-cont{
+        background-image: url("static/green-wooden-fence.jpg");
+        background-size:cover;
+      }
+
+    </style>
   </head>
   <body>
 
     <div class="container">
       <div class="jumbotron">
+        <div class="jumbotron-cont">
 
         {% if registered %}
-
+           {% csrf_token %}
           <h1>Thank You For Registering</h1>
         {% else  %}
+        {% csrf_token %}
           <h1>Register Here</h1>
           <h3>Fill out the form</h3>
           {% if registerFlag == 0 %}
@@ -35,7 +47,7 @@
 
           </form>
         {% endif %}
-
+      </div>
       </div>
 
     </div>
