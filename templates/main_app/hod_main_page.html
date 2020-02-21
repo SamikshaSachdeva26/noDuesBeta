@@ -17,7 +17,7 @@
 
       <div class="container">
         <ul class="nav navbar-nav">
-          
+
           <li><a style="color:white" onMouseOver="this.style.color='green'" onMouseOut="this.style.color='white'" class="navbar-link" href="{% url 'logout' %}">Log Out</a></li>
           <li><a style="color:white" onMouseOver="this.style.color='green'" onMouseOut="this.style.color='white'" class="navbar-link" href="{% url 'hodIndex' %}">Student Requests</a></li>
           <li><a style="color:white" onMouseOver="this.style.color='green'" onMouseOut="this.style.color='white'" class="navbar-link" href="{% url 'labAccountRequests' %}">Lab Account Requests</a></li>
@@ -249,75 +249,102 @@
     </div>
 
     <script>
-        function myFunction()
-        {
-          var input, filter, table, tr, td, i, txtValue;
-          input = document.getElementById("myInput");
-          filter = input.value;
-          table = document.getElementById("myTable");
-          tr = table.getElementsByTagName("tr");
-          for (i = 0; i < tr.length; i++) {
-          td = tr[i].getElementsByTagName("td")[1];
-          if (td)
-          {
-            txtValue = td.textContent || td.innerText;
-            if (txtValue.indexOf(filter) > -1) {
-              tr[i].style.display = "";
-            } else {
-              tr[i].style.display = "none";
-            }
-          }
-        }
-      }
-
-      function myFunction1()
+    function myFunction()
+    {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value;
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[1];
+      if (td)
       {
-        var input, filter, table, tr, td, i, txtValue;
-        input = document.getElementById("myInput1");
-        filter = input.value;
-        table = document.getElementById("myTable1");
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[1];
-        if (td)
-        {
-          txtValue = td.textContent || td.innerText;
-          if (txtValue.indexOf(filter) > -1) {
-            tr[i].style.display = "";
-          } else {
-            tr[i].style.display = "none";
-          }
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
         }
       }
+    }
+  }
+
+  function myFunction1()
+  {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput1");
+    filter = input.value;
+    table = document.getElementById("myTable1");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td)
+    {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
       }
+    }
+  }
+  }
 
-      function toggle(source) {
-        checkboxes = document.getElementsByClassName('2');
-        for(var i=0, n=checkboxes.length;i<n;i++) {
-          checkboxes[i].checked = source.checked;
-        }
+  function toggle(source) {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value;
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td)
+    {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.indexOf(filter) > -1) {
+        tr[i].getElementsByTagName("td")[0].getElementsByClassName("2")[0].checked = source.checked;
+      } else {
+        tr[i].getElementsByTagName("td")[0].getElementsByClassName("2")[0].checked = false;
       }
+    }
+  }
+  }
 
-      function toggle2(source){
+  function toggle2(source){
 
-        document.getElementById("selectAll2").checked=false;
+    document.getElementById("selectAll2").checked=false;
 
+  }
+
+  function toggle3(source) {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput1");
+    filter = input.value;
+    table = document.getElementById("myTable1");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td)
+    {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.indexOf(filter) > -1) {
+        tr[i].getElementsByTagName("td")[0].getElementsByClassName("1")[0].checked = source.checked;
+      } else {
+        tr[i].getElementsByTagName("td")[0].getElementsByClassName("1")[0].checked = false;
       }
+    }
+  }
+  }
 
-      function toggle3(source) {
-        checkboxes = document.getElementsByClassName('1');
-        for(var i=0, n=checkboxes.length;i<n;i++) {
-          checkboxes[i].checked = source.checked;
-        }
-      }
+  function toggle4(source){
 
-      function toggle4(source){
+    document.getElementById("selectAll1").checked=false;
 
-        document.getElementById("selectAll1").checked=false;
-
-      }
+  }
 
 </script>
+
 
   </body>
 </html>

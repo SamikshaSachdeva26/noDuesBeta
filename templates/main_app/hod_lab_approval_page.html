@@ -191,10 +191,24 @@
 
 
       function toggle(source) {
-    checkboxes = document.getElementsByClassName('form-check-input');
-    for(var i=0, n=checkboxes.length;i<n;i++) {
-    checkboxes[i].checked = source.checked;
-    }
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value;
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[1];
+      if (td)
+      {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.indexOf(filter) > -1) {
+          tr[i].getElementsByTagName("td")[0].getElementsByClassName("form-check-input")[0].checked = source.checked;
+
+        } else {
+          tr[i].getElementsByTagName("td")[0].getElementsByClassName("form-check-input")[0].checked = false;
+        }
+      }
+  }
   }
 
   function toggle2(source){
