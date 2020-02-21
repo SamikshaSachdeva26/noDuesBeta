@@ -30,5 +30,7 @@ urlpatterns = [
     re_path(r'^main_app/',include('main_app.urls')),
     path('admin/', admin.site.urls),
     re_path(r'^logout/$', views.user_logout, name='logout'),
+    re_path(r'^student_logout/$', views.student_logout, name='student_logout'),
+    path('signino', views.sign_ino, name='signino'),
 
 ]

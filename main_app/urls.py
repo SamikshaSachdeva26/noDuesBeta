@@ -19,4 +19,6 @@ urlpatterns = [
     re_path(r'^StudentApply/', views.apply_page, name='StudentApply'),
     # re_path(r'^applied/', views.create_applied, name='applied'),
     re_path(r'^change_password/',views.change_password,name='change_password'),
+    path('callback', views.callback, name='callback'),
+
 ]

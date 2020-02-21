@@ -10,7 +10,9 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
-
+from main_app.graph_helper import get_user
+from main_app.auth_helper import get_sign_in_url, get_token_from_code, store_token, store_user, remove_user_and_token, get_token
+from django.views.decorators.csrf import csrf_exempt
 
 
 @login_required
@@ -18,13 +20,26 @@ def user_logout(request):
     logout(request);
     return HttpResponseRedirect(reverse('mainPage'))
 
+def student_logout(request):
+    logout(request)
+    remove_user_and_token(request)
+
+    return HttpResponseRedirect(reverse('mainPage'))
 
 
 def mainPage(request):
 
+
+
     if request.user.is_authenticated:
+
+
         dict1 = StudentUserInfo.objects.filter(user=request.user)
         if len(dict1)>0:
+            print(dict1)
+            context = initialize_context(request)
+            if(context['user']['is_authenticated'] == False):
+                return user_logout(request)
             return HttpResponseRedirect(reverse('studentIndex'))
         else:
             dict2 = LabUserInfo.objects.filter(user=request.user)
@@ -49,10 +64,79 @@ def mainPage(request):
 
         return render(request, 'main_app/base.html')
 
+def initialize_context(request):
+  context = {}
+
+  # Check for any errors in the session
+  error = request.session.pop('flash_error', None)
+
+  if error != None:
+    context['errors'] = []
+    context['errors'].append(error)
+
+  # Check for user in the session
+  context['user'] = request.session.get('user', {'is_authenticated': False})
+  print('Request Session', request.session)
+  print('contexttt', context)
+  if (context['user']['is_authenticated'] == True):
+      login(request, StudentUserInfo.objects.get(user__email = context['user']['email']).user)
+
+  return context
+
+
+
+def callback(request):
+  # Get the state saved in session
+
+
+
+  expected_state = request.session.pop('auth_state', '')
+  # Make the token request
+  token = get_token_from_code(request.get_full_path(), expected_state)
+
+  # Get the user's profile
+  user = get_user(token)
+
+  try:
+    print("Found", StudentUserInfo.objects.get(user__email=user['mail']))
+    login(request, StudentUserInfo.objects.get(user__email=user['mail']).user)
+  except:
+    print(StudentUserInfo.objects.get(user__email='voter@maadr.chod'))
+
+  # Save token and user
+  store_token(request, token)
+  store_user(request, user)
+
+
+
+  return HttpResponseRedirect(reverse('studentIndex'))
+
+
+def sign_ino(request):
+  # Get the sign-in URL
+  sign_in_url, state = get_sign_in_url()
+  # Save the expected state so we can validate in the callback
+  request.session['auth_state'] = state
+  # Redirect to the Azure sign-in page
+  return HttpResponseRedirect(sign_in_url)
+
+@csrf_exempt
 def studentIndex(request):
 
+
     if request.POST:
-        student = StudentUserInfo.objects.get(user=request.user)
+
+        print('POSTY', request.POST)
+
+        context = initialize_context(request)
+
+
+        if context['user']['is_authenticated'] == False:
+            return user_logout(request)
+
+        print('CONCON', context)
+
+        student = StudentUserInfo.objects.get(user__email=context['user']['email'])
         varlib = request.POST.get('Library/CCC',None)
         if varlib:
             try:
@@ -62,15 +146,15 @@ def studentIndex(request):
 
             if vlib:
                 vlib.delete()
-                lib = OtherRequest.objects.create(  other=OtherUserInfo.objects.get(user__username="LibraryCCC"),
-                                                student=StudentUserInfo.objects.get(user=request.user),
+                lib = OtherRequest.objects.create( other=OtherUserInfo.objects.get(user__username="LibraryCCC"),
+                                                student=student,
                                                 remark="",
                                                 date_sent=datetime.date.today(),
                                                 approval_status=0
                                                 )
             else:
                 lib = OtherRequest.objects.create(  other=OtherUserInfo.objects.get(user__username="LibraryCCC"),
-                                                student=StudentUserInfo.objects.get(user=request.user),
+                                                student=student,
                                                 remark="",
                                                 date_sent=datetime.date.today(),
                                                 approval_status=0
@@ -87,14 +171,14 @@ def studentIndex(request):
             if vlib:
                 vlib.delete()
                 lib = OtherRequest.objects.create(  other=OtherUserInfo.objects.get(user__username="Gymkhana"),
-                                                student=StudentUserInfo.objects.get(user=request.user),
+                                                student=student,
                                                 remark="",
                                                 date_sent=datetime.date.today(),
                                                 approval_status=0
                                                 )
             else:
                 lib = OtherRequest.objects.create(  other=OtherUserInfo.objects.get(user__username="Gymkhana"),
-                                                student=StudentUserInfo.objects.get(user=request.user),
+                                                student=student,
                                                 remark="",
                                                 date_sent=datetime.date.today(),
                                                 approval_status=0
@@ -110,14 +194,14 @@ def studentIndex(request):
             if vlib:
                 vlib.delete()
                 lib = OtherRequest.objects.create(  other=OtherUserInfo.objects.get(user__username=varlib),
-                                                student=StudentUserInfo.objects.get(user=request.user),
+                                                student=student,
                                                 remark="",
                                                 date_sent=datetime.date.today(),
                                                 approval_status=0
                                                 )
             else:
                 lib = OtherRequest.objects.create(  other=OtherUserInfo.objects.get(user__username=varlib),
-                                                student=StudentUserInfo.objects.get(user=request.user),
+                                                student=student,
                                                 remark="",
                                                 date_sent=datetime.date.today(),
                                                 approval_status=0
@@ -144,14 +228,14 @@ def studentIndex(request):
                 btpt.delete()
                 if approval_status == 0:
                     btp = BTPRequest.objects.create(  btp=btpOrHod,
-                                                    student=StudentUserInfo.objects.get(user=request.user),
+                                                    student=student,
                                                     remark="",
                                                     date_sent=datetime.date.today(),
                                                     approval_status=approval_status
                                                     )
                 else:
                     btp = BTPRequest.objects.create(  hod=btpOrHod,
-                                                    student=StudentUserInfo.objects.get(user=request.user),
+                                                    student=student,
                                                     remark="",
                                                     date_sent=datetime.date.today(),
                                                     approval_status=approval_status
@@ -160,14 +244,14 @@ def studentIndex(request):
             else:
                  if approval_status == 0:
                      btp = BTPRequest.objects.create(  btp=btpOrHod,
-                                                     student=StudentUserInfo.objects.get(user=request.user),
+                                                     student=student,
                                                      remark="",
                                                      date_sent=datetime.date.today(),
                                                      approval_status=approval_status
                                                      )
                  else:
                      btp = BTPRequest.objects.create(  hod=btpOrHod,
-                                                     student=StudentUserInfo.objects.get(user=request.user),
+                                                     student=student,
                                                      remark="",
                                                      date_sent=datetime.date.today(),
                                                      approval_status=approval_status
@@ -190,34 +274,51 @@ def studentIndex(request):
                 if ll:
                     ll.delete()
                     labx = LabRequests.objects.create(  lab=LabUserInfo.objects.get(id=lab.id),
-                                                student=StudentUserInfo.objects.get(user=request.user),
+                                                student=student,
                                                 remark="",
                                                 date_sent=datetime.date.today(),
                                                 approval_status=0
                                                 )
                 else:
                     labx = LabRequests.objects.create(  lab=LabUserInfo.objects.get(id=lab.id),
-                                                student=StudentUserInfo.objects.get(user=request.user),
+                                                student=student,
                                                 remark="",
                                                 date_sent=datetime.date.today(),
                                                 approval_status=0
                                                 )
 
 
-        return HttpResponseRedirect(reverse('mainPage'))
 
+        return HttpResponseRedirect(reverse('mainPage'))
 
 
 
     if request.user.is_authenticated:
 
+        context = initialize_context(request)
+
+        if context['user']['is_authenticated'] == False:
+            return user_logout(request)
+
+        print('CONCON', context)
+
+
+
+
+        print('CONTEXT', context)
 
         labRequests = LabRequests.objects.filter(student__user=request.user)
         btpRequests = BTPRequest.objects.filter(student__user=request.user)
         otherRequests = OtherRequest.objects.filter(student__user=request.user)
-        return render(request, 'main_app/student_main_page.html', {'labRequests': labRequests, 'btpRequests': btpRequests, 'otherRequests': otherRequests});
+        context['labRequests'] = labRequests
+        context['btpRequests'] = btpRequests
+        context['otherRequests'] = otherRequests
 
-    return HttpResponseRedirect(reverse('mainPage'))
+        return render(request, 'main_app/student_main_page.html', context);
+
+    else:
+
+        return HttpResponseRedirect(reverse('mainPage'))
 
 
 
@@ -230,7 +331,7 @@ def labIndex(request):
                 p = 1
                 stud = str(req.student.rollnumber)
                 if request.POST.getlist(stud)[0] == 'YES':
-                    
+
                     req.approval_status = 1
                     req.remark = request.POST.getlist(stud)[1]
                     req.save()
@@ -766,7 +867,10 @@ def change_password(request):
     })
 
 def apply_page(request):
-    student = StudentUserInfo.objects.get(user=request.user)
+
+    context = initialize_context(request)
+
+    student = StudentUserInfo.objects.get(user__email=context['user']['email'])
     try:
         othreqs = OtherRequest.objects.filter(student=student)
     except OtherRequest.DoesNotExist:
@@ -858,8 +962,21 @@ def apply_page(request):
     if l == 1 and h == 1 and b == 1 and op == 0 and g == 1 :
         k = 1
 
-    return render(request, 'main_app/apply.html', {'student' : student, 'btps' : btps, 'labs' : labs, 'labreqs': labreqs, 'othreqs': othreqs, 'btpreq' : btpreq,
-                                                     'l' : l, 'h' : h, 'b' : b ,'op' : op , 'k' : k , 'arr' : arr, 'g' : g })
+    context['student'] = student;
+    context['btps'] = btps;
+    context['labs'] = labs;
+    context['labreqs'] = labreqs
+    context['othreqs'] = othreqs
+    context['btpreq'] = btpreq
+    context['l'] = l
+    context['h'] = h
+    context['b'] = b
+    context['op'] = op
+    context['k'] = k
+    context['arr'] = arr
+    context['g'] = g
+
+    return render(request, 'main_app/apply.html', context)
 
 
 

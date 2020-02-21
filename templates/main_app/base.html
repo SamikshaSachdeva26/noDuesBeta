@@ -10,7 +10,7 @@
       body{
         background-image: url("static/background.jpeg");
         background-size:cover;
-        
+
         color:black;
         background-repeat:no-repeat;
         background-position:center;
@@ -48,8 +48,8 @@
           <li><a style="color:white" onMouseOver="this.style.color='green'" onMouseOut="this.style.color='white'" class="navbar-link" href="{% url 'main_app:studentLab' %}">Lab Requests</a></li>
           <li><a style="color:white" onMouseOver="this.style.color='green'" onMouseOut="this.style.color='white'" class="navbar-link" href="{% url 'main_app:studentBTP' %}">BTP Requests</a></li>
           <li><a style="color:white" onMouseOver="this.style.color='green'" onMouseOut="this.style.color='white'" class="navbar-link" href="{% url 'main_app:studentOther' %}">Other Requests</a></li>
-          <li><a style="color:white" onMouseOver="this.style.color='green'" onMouseOut="this.style.color='white'" class="navbar-link" href="{% url 'main_app:change_password' %}">Change Password</a></li>
-          <li><a style="color:white" onMouseOver="this.style.color='green'" onMouseOut="this.style.color='white'" class="navbar-link" href="{% url 'logout' %}">Log Out</a></li>
+          <!-- <li><a style="color:white" onMouseOver="this.style.color='green'" onMouseOut="this.style.color='white'" class="navbar-link" href="{% url 'main_app:change_password' %}">Change Password</a></li> -->
+          <li><a style="color:white" onMouseOver="this.style.color='green'" onMouseOut="this.style.color='white'" class="navbar-link" href="{% url 'student_logout' %}">Log Out</a></li>
 
         </ul>
       </div>
@@ -78,9 +78,11 @@
         <div class="jumbotron">
 
           <div class="jumbotron-content">
-          
+
 
             <h1 style="color:white" >Please Log In</h1>
+
+            <a href="{% url 'signino' %}" class="btn btn-primary btn-large">Click here to sign in</a>
 
             <form action={% url 'main_app:user_login' %} method="post">
             {% csrf_token %}
@@ -94,22 +96,22 @@
             </div>
             <input type="submit" name="" value="Login">
           </form>
-       
+
           <h4 style="color:white">------------------------------<i>or</i>------------------------------</h4>
           <a href="{% url 'main_app:registerStudent' %}"><b>Don't have an account? Register as Student!</b></a>
-          
+
           <br>
           <a href="{% url 'main_app:registerLab' %}"><b>Don't have an account? Register as Lab!</b></a>
-          
+
           <br>
           <a href="{% url 'main_app:registerBTP' %}"><b>Don't have an account? Register as BTP!</b></a>
-          
+
           <br>
           <a href="{% url 'main_app:registerHOD' %}"><b>Don't have an account? Register as HOD!</b></a>
-         
+
           <br>
           <a href="{% url 'main_app:registerOther' %}"><b>Don't have an account? Register as Other!</b></a>
-          
+
           <br>
            </div>
 
