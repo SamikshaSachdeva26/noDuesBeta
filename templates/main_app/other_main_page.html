@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'styles.css' %}">
 
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{% static 'bootstrap.min.js' %}"></script>
+
   </head>
   <body>
 
@@ -46,7 +50,7 @@
 
 
     <div class="container">
-      <div style="background-color:#DAAD86" class="jumbotron">
+      <div style="background-color:#b0e0e6" class="jumbotron">
             <form action="{% url 'otherIndex' %}" method="POST" enctype="multipart/form-data" class="form-horizontal">
                             {% csrf_token %}
                             UPLOAD FILE HERE...
@@ -58,6 +62,42 @@
                      <button type="submit" name="AcceptCSV" class="btn btn-primary"> Upload and Accept </button>
                      <button type="submit" name="RejectCSV" class="btn btn-danger"> Upload and Reject </button>
             </form>
+
+            <div class="text-right">
+               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mymodal">Format for CSV file</button>
+           </div>
+
+            <div class="modal fade" id="mymodal">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times</button>
+                    <h4 class="modal-title">CSV File Format for Accepting/Rejecting</h4>
+                  </div>
+                  <div class="modal-body">
+
+                    <ul>
+                      <li>File should be of CSV type.</li>
+                      <li>Please don't format the cells.</li>
+                      <li>Every row should have two entries:</li>
+                      <ul>
+                        <li>First being the roll number.</li>
+                        <li>Second being the remark.</li>
+                      </ul>
+                    </ul>
+
+                      <img style="max-width:100%" src="{% static  'csvFileFormats/otherRequests.png' %}" alt="lab format">
+
+
+                  </div>
+
+
+
+                </div>
+
+              </div>
+
+            </div>
       </div>
     </div>
 
@@ -79,7 +119,7 @@
 
     {% if p %}
     <div class="container">
-      <div style="background-color:#DAAD86" class="jumbotron">
+      <div style="background-color:#b0e0e6" class="jumbotron">
 
         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for roll no" title="Type in roll number">
       	<br><br>
