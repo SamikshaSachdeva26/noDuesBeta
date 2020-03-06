@@ -262,7 +262,7 @@ def studentIndex(request):
 
 
 
-        labs = LabUserInfo.objects.filter(department_id=student.department_id)
+        labs = LabUserInfo.objects.filter(department__in=[student.department])
         for lab in labs :
 
             varlab = request.POST.get(lab.user.username, None)
@@ -890,7 +890,7 @@ def apply_page(request):
     except BTPUserInfo.DoesNotExist or HODUserInfo.DoesNotExist:
         btps = None
     try:
-        labs = LabUserInfo.objects.filter(department_id=student.department_id, approval_status=1)
+        labs = LabUserInfo.objects.filter(department__in=[student.department], approval_status=1)
     except LabUserInfo.DoesNotExist:
         labs = None
     l = 0
