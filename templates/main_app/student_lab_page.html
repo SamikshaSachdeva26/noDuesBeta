@@ -22,15 +22,17 @@
   <tr>
     <td>{{ req.lab.user.username }}</td>
 
+   
     {% if req.approval_status == 0 %}
-    <td>WAITING</td>
+    <td  style="font-weight: 500;color:gray;">Waiting                <img class="l sb-l" src="chrome-extension://fnpbeacklnhmkkilekogeiekaglbmmka/content/images/sb_unknownAnnotation.svg" id="sbresult_7" style="position: relative; top: 0px; cursor: pointer; width: 16px; height: 16px;"></td>
     {% elif req.approval_status == 1 %}
-    <td>Waiting for HOD approval</td>
+    <td style="font-weight: 500;color:gray;">Waiting for HOD approval    <img class="l sb-l" src="chrome-extension://fnpbeacklnhmkkilekogeiekaglbmmka/content/images/sb_unknownAnnotation.svg" id="sbresult_7" style="position: relative; top: 0px; cursor: pointer; width: 16px; height: 16px;"></td>
     {% elif req.approval_status == 2 %}
-    <td>Approved</td>
+    <td style="font-weight: 600;color:green;">Approved         <img class="l sb-l" src="chrome-extension://fnpbeacklnhmkkilekogeiekaglbmmka/content/images/sb_safeAnnotation.svg" id="sbresult_0" style="position: relative; top: 0px; cursor: pointer; width: 16px; height: 16px;"></td>
     {% else %}
-    <td>Rejected</td>
+    <td style="font-weight: 600;color:#C21807;">Rejected         <img class="l sb-l" src="chrome-extension://fnpbeacklnhmkkilekogeiekaglbmmka/content/images/sb_unsafeAnnotation.svg" id="sbresult_9" style="position: relative; top: 0px; cursor: pointer; width: 16px; height: 16px;"></td>
     {% endif %}
+
 
     <td>{{ req.remark }}</td>
   </tr>
