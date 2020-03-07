@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from main_app.models import StudentUserInfo, LabUserInfo, HODUserInfo, OtherUserInfo, BTPUserInfo
+from main_app.models import StudentUserInfo, LabUserInfo, HODUserInfo, OtherUserInfo, BTPUserInfo, Department
 
 class StudentUserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -26,6 +26,13 @@ class LabInfoForm(forms.ModelForm):
     class Meta():
         model = LabUserInfo
         fields = ('department',)
+
+    def __init__(self, *args, **kwargs):
+
+        super(LabInfoForm, self).__init__(*args, **kwargs)
+
+        self.fields["department"].widget = forms.CheckboxSelectMultiple()
+        self.fields["department"].queryset = Department.objects.all()
 
 
 class HODUserForm(forms.ModelForm):

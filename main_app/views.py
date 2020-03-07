@@ -708,15 +708,52 @@ def registerStudent(request):
 def registerLab(request):
     registered = False
     if request.method == "POST":
+
+        print('post', request.POST)
+
         user_form = LabUserForm(data=request.POST)
         info_form = LabInfoForm(data=request.POST)
         if user_form.is_valid() and info_form.is_valid():
             user = user_form.save();
             user.set_password(user.password)
             user.save()
+
             profile = info_form.save(commit=False)
             profile.user = user;
+
             profile.save()
+
+            if '1' in request.POST.getlist('department'):
+                profile.department.add(Department.objects.get(name="CSE"))
+
+            if '2' in request.POST.getlist('department'):
+                profile.department.add(Department.objects.get(name="MnC"))
+
+            if '3' in request.POST.getlist('department'):
+                profile.department.add(Department.objects.get(name="ECE"))
+
+            if '4' in request.POST.getlist('department'):
+                profile.department.add(Department.objects.get(name="EEE"))
+
+            if '5' in request.POST.getlist('department'):
+                profile.department.add(Department.objects.get(name="CL"))
+
+            if '6' in request.POST.getlist('department'):
+                profile.department.add(Department.objects.get(name="CE"))
+
+            if '7' in request.POST.getlist('department'):
+                profile.department.add(Department.objects.get(name="CST"))
+
+            if '8' in request.POST.getlist('department'):
+                profile.department.add(Department.objects.get(name="ME"))
+
+            if '9' in request.POST.getlist('department'):
+                profile.department.add(Department.objects.get(name="BT"))
+
+            if '10' in request.POST.getlist('department'):
+                profile.department.add(Department.objects.get(name="EP"))
+
+
             registered = True
             if user:
                 if user.is_active:
@@ -1034,6 +1071,6 @@ def hod_lab_approval_page(request):
         dicts = HODUserInfo.objects.filter(user=request.user)
         for dict in dicts:
             department = dict.department
-            requests = LabUserInfo.objects.filter(department=department, approval_status=0)
+            requests = LabUserInfo.objects.filter(department__in=[department], approval_status=0)
             return render(request, 'main_app/hod_lab_approval_page.html', {'requests': requests });
     return HttpResponseRedirect(reverse('labAccountRequests'))
