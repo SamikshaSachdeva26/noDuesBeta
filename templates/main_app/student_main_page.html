@@ -41,9 +41,10 @@ transition: all 0.4s ease 0s;
 
   <table class="table table-hover" style="width:100%">
   <tr>
-    <th>Lab</th>
-    <th>Approval Status</th>
-    <th>Remark</th>
+    <th>LAB</th>
+    <th>DATE SENT</th>
+    <th>APPROVAL STATUS</th>
+    <th>REMARK</th>
 
   </tr>
 
@@ -51,6 +52,8 @@ transition: all 0.4s ease 0s;
 
   <tr>
     <td>{{ req.lab.user.username }}</td>
+
+    <td>{{ req.date_sent }}</td>
 
     {% if req.approval_status == 0 %}
     <td  style="font-weight: 500;color:gray;">Waiting                <img class="l sb-l" src="chrome-extension://fnpbeacklnhmkkilekogeiekaglbmmka/content/images/sb_unknownAnnotation.svg" id="sbresult_7" style="position: relative; top: 0px; cursor: pointer; width: 16px; height: 16px;"></td>
@@ -82,9 +85,10 @@ transition: all 0.4s ease 0s;
 
   <table class="table table-hover" style="width:100%">
   <tr>
-    <th>BTP Professor</th>
-    <th>Approval Status</th>
-    <th>Remark</th>
+    <th>BTP PROFESSOR</th>
+    <th>DATE SENT</th>
+    <th>APPROVAL STATUS</th>
+    <th>REMARK</th>
   </tr>
 
   {% for req in btpRequests %}
@@ -95,8 +99,8 @@ transition: all 0.4s ease 0s;
     {% else %}
     <td>{{ req.hod.user.username }}</td>
     {% endif %}
+    <td>{{ req.date_sent }}</td>
 
-    
     {% if req.approval_status == 0 %}
     <td  style="font-weight: 500;color:gray;">Waiting                <img class="l sb-l" src="chrome-extension://fnpbeacklnhmkkilekogeiekaglbmmka/content/images/sb_unknownAnnotation.svg" id="sbresult_7" style="position: relative; top: 0px; cursor: pointer; width: 16px; height: 16px;"></td>
     {% elif req.approval_status == 1 %}
@@ -129,9 +133,10 @@ transition: all 0.4s ease 0s;
 
   <table class="table table-hover" style="width:100%">
   <tr>
-    <th>Department</th>
-     <th>Approval Status</th>
-     <th>Remark</th>
+    <th>DEPARTMENT</th>
+    <th>DATE SENT</th>
+     <th>APPROVAL STATUS</th>
+     <th>REMARK</th>
   </tr>
 
   {% for req in otherRequests %}
@@ -141,8 +146,8 @@ transition: all 0.4s ease 0s;
     <td>{{ req.other.user.username }}</td>
 
 
+    <td>{{ req.date_sent }}</td>
 
-   
     {% if req.approval_status == 0 %}
     <td  style="font-weight: 500;color:gray;">Waiting                <img class="l sb-l" src="chrome-extension://fnpbeacklnhmkkilekogeiekaglbmmka/content/images/sb_unknownAnnotation.svg" id="sbresult_7" style="position: relative; top: 0px; cursor: pointer; width: 16px; height: 16px;"></td>
     {% elif req.approval_status == 1 %}
