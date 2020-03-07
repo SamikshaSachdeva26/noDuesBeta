@@ -3,6 +3,11 @@ from django.contrib.auth.models import User
 from django.core.validators import MinLengthValidator
 
 # Create your models here.
+class Prog(models.Model):
+    name = models.CharField(max_length=100,unique=True)
+
+    def __str__(self):
+        return self.name
 
 class Department(models.Model):
     name = models.CharField(max_length = 264, unique=True)
@@ -19,6 +24,7 @@ class StudentUserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     rollnumber = models.IntegerField(unique=True)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    prog = models.ForeignKey(Prog,on_delete=models.CASCADE,null=True)
 
     def __str__(self):
         return  str(self.rollnumber)  + "--" + self.user.username
@@ -36,6 +42,7 @@ class LabUserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     department = models.ManyToManyField('Department')
     approval_status=models.IntegerField(default=0)
+    prog = models.ForeignKey(Prog,on_delete=models.CASCADE,null=True)
     def __str__(self):
         return self.user.username
 
