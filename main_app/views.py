@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
-from main_app.models import Department, StudentUserInfo, HODUserInfo, LabUserInfo, BTPUserInfo, OtherUserInfo, LabRequests, BTPRequest, OtherRequest
+from main_app.models import Department, StudentUserInfo, HODUserInfo, LabUserInfo, BTPUserInfo, OtherUserInfo, LabRequests, BTPRequest, OtherRequest, HeavenUserInfo
 import datetime
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
@@ -119,6 +119,62 @@ def sign_ino(request):
   request.session['auth_state'] = state
   # Redirect to the Azure sign-in page
   return HttpResponseRedirect(sign_in_url)
+
+class Entry():
+    name = ""
+    a=0
+    b=0
+    c=0
+
+def heavenIndex(request):
+
+
+    if request.user.is_authenticated:
+
+        dict2 = HeavenUserInfo.objects.filter(user=request.user)
+        if len(dict2) == 0:
+            return HttpResponseRedirect(reverse('mainPage'))
+
+        dict = []
+
+        students = StudentUserInfo.objects.all()
+
+        for student in students:
+            a=0
+            b=0
+            c=0
+            department = student.department
+            labsRequired = LabUserInfo.objects.filter(department__in=[department])
+            labsAccepted = LabRequests.objects.filter(student=student, approval_status=2)
+            f=0
+            temp = []
+            if len(labsRequired)>len(labsAccepted):
+                a=1
+
+            btpAccepted = BTPRequest.objects.filter(student=student, approval_status = 2)
+            if len(btpAccepted)==0:
+                b=1
+
+            othersAccepted = OtherRequest.objects.filter(student=student, approval_status = 2)
+
+            if len(othersAccepted)<3:
+                c=1
+
+            ent = Entry()
+            ent.name = student.rollnumber
+            ent.a = a
+            ent.b = b
+            ent.c = c
+
+            dict.append(ent)
+
+        dict.sort(key=lambda Entry: Entry.name)
+
+        return render(request, 'main_app/heavenIndex.html', {'dict': dict})
+
+    else:
+        return HttpResponseRedirect(reverse('mainPage'))
+
 
 @csrf_exempt
 def studentIndex(request):
@@ -537,6 +593,11 @@ def otherIndex(request):
 
 
     if request.user.is_authenticated:
+
+        dictTemp = OtherUserInfo.objects.filter(user=request.user)
+        if len(dictTemp) == 0:
+            return HttpResponseRedirect(reverse('mainPage'))
+
         requests = OtherRequest.objects.filter(other__user=request.user, approval_status=0)
         if requests:
             p = 1
@@ -850,6 +911,8 @@ def registerBTP(request):
     return render(request, 'main_app/register_page.html', {'user_form': user_form, 'info_form': info_form, 'registered': registered, 'registerFlag': 3})
 
 
+
+
 def user_login(request):
 
     if request.method == "POST":
@@ -879,7 +942,11 @@ def user_login(request):
                                 if len(dict5)>0:
                                     return HttpResponseRedirect(reverse('hodIndex'))
                                 else:
-                                    return HttpResponse("unable to log in")
+                                    dict6 = HeavenUserInfo.objects.filter(user=request.user)
+                                    if len(dict6)>0:
+                                        return HttpResponseRedirect(reverse('heavenIndex'))
+                                    else:
+                                        return HttpResponse("unable to log in")
             else:
                 return HttpResponse('ACCOUNT NOT ACTIVE')
         else:

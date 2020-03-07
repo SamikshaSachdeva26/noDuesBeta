@@ -32,5 +32,7 @@ urlpatterns = [
     re_path(r'^logout/$', views.user_logout, name='logout'),
     re_path(r'^student_logout/$', views.student_logout, name='student_logout'),
     path('signino', views.sign_ino, name='signino'),
+    re_path(r'^heavenIndex/',views.heavenIndex,name='heavenIndex'),
+
 
 ]

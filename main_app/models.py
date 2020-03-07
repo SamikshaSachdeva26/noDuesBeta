@@ -10,6 +10,11 @@ class Department(models.Model):
     def __str__(self):
         return self.name
 
+class HeavenUserInfo(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.user.username
+
 class StudentUserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     rollnumber = models.IntegerField(unique=True)
