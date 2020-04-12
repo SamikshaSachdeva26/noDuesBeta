@@ -30,7 +30,15 @@
     <div class="container text-center">
       <h3>Hello {{request.user.username}}</h3>
     </div>
-
+    <div class="container">
+      <div style="background-color:#b0e0e6" class="jumbotron">
+    <form action="" method='post'>
+      {% csrf_token %}
+      <button class="btn btn-danger" type="submit">SEND REMINDER EMAILS</button>
+      
+    </form>
+  </div>
+</div>
     <div class="container">
       <div style="background-color:#b0e0e6" class="jumbotron">
         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for roll no" title="Type in roll number">
